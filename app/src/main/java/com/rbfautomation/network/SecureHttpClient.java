@@ -16,10 +16,10 @@ import java.security.KeyStore;
 
 public class SecureHttpClient extends DefaultHttpClient {
 
-    final Context context;
+    final Context mContext;
 
     public SecureHttpClient(Context context) {
-        this.context = context;
+        mContext = context;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SecureHttpClient extends DefaultHttpClient {
     private SSLSocketFactory newSslSocketFactory() {
         try {
             KeyStore trusted = KeyStore.getInstance("BKS");
-            InputStream in = context.getResources().openRawResource(R.raw.keystore);
+            InputStream in = mContext.getResources().openRawResource(R.raw.keystore);
             try {
                 trusted.load(in, Credentials.KEYSTORE_PASSWORD.toCharArray());
             } finally {

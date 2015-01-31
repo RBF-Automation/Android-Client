@@ -1,5 +1,6 @@
 package com.rbfautomation;
 
+import android.app.FragmentManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -7,16 +8,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
+import com.rbfautomation.data.CardItem;
+import com.rbfautomation.data.SwitchCardItem;
+import com.rbfautomation.fragments.CardListViewFragment;
 import com.rbfautomation.network.Request;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
+import java.util.ArrayList;
+
 
 public class Main extends ActionBarActivity implements Request.OnRequsetListener {
+
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,33 +50,21 @@ public class Main extends ActionBarActivity implements Request.OnRequsetListener
         getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
 
-        Request.makeRequest("test", "test", getApplicationContext(), this);
+        //Request.makeRequest("test", "test", getApplicationContext(), this);
+
+
+        mFragmentManager = getFragmentManager();
+
+        ArrayList<CardItem> cards = new ArrayList();
+        cards.add(new SwitchCardItem("Front Door", "UnLock", "Lock"));
+
+        CardListViewFragment fragment = new CardListViewFragment();
+        fragment.setCardData(cards);
+        mFragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
 
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onResponse(HttpResponse response) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="horizontal" >
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:textColor="@color/buttonTextColor"
+        android:layout_margin="3dp"
+        android:text="ON"
+        android:layout_weight="1"
+        android:id="@+id/on_button"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="@drawable/button"
+        android:textColor="@color/buttonTextColor"
+        android:text="OFF"
+        android:layout_weight="1"
+        android:id="@+id/off_button"/>
+
+
+
+</LinearLayout>
