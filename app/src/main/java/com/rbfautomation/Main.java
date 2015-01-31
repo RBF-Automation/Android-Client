@@ -1,17 +1,22 @@
-package homecontrol.rbfautomation.com.rbfautomation;
+package com.rbfautomation;
 
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
+
+import com.rbfautomation.network.Request;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 
 
-public class Main extends ActionBarActivity {
+public class Main extends ActionBarActivity implements Request.OnRequsetListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +24,8 @@ public class Main extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.primaryAccent));
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //getWindow().setStatusBarColor(getResources().getColor(R.color.primaryAccent));
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -38,6 +43,10 @@ public class Main extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
+
+        Request.makeRequest("test", "test", getApplicationContext(), this);
+
+
     }
 
 
@@ -61,5 +70,17 @@ public class Main extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResponse(HttpResponse response) {
+        try {
+            Log.e("e", EntityUtils.toString(response.getEntity()));
+        } catch (Exception e) {}
+    }
+
+    @Override
+    public void onError(Exception e) {
+
     }
 }
