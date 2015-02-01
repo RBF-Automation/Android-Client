@@ -11,15 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.Settings;
-import com.rbfautomation.data.CardItem;
 import com.rbfautomation.data.JsonDecoder;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetTokenRequest;
 import com.rbfautomation.network.requests.Request;
-
-import java.util.ArrayList;
 
 /**
  * Created by brian on 2/1/15.
@@ -28,6 +26,7 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
 
     private TextView mUsername, mPassword;
     private Button mLogin;
+    private INavigationEvents mNavigationEventHandler;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,10 +51,8 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
         return v;
     }
 
-    public void setupCardFragment(ArrayList<CardItem> cards) {
-        CardListViewFragment fragment = new CardListViewFragment();
-        fragment.setCardData(cards);
-        getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
+    public void setmNavigationEventHandler(INavigationEvents eventHandler) {
+        mNavigationEventHandler = eventHandler;
     }
 
     private void login() {
@@ -69,10 +66,7 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
     private void saveToken(String token) {
         Settings settings = new Settings(getActivity());
         settings.setToken(token);
-
-        SplashFragment fragment = new SplashFragment();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
-
+        mNavigationEventHandler.goToSplash();
     }
 
     @Override

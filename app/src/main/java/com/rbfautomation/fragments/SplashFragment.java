@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.Settings;
 import com.rbfautomation.data.CardItem;
@@ -24,11 +25,11 @@ import java.util.ArrayList;
 public class SplashFragment extends Fragment implements NetworkManager.NetworkEventListener {
 
     NetworkManager mNetworkManager;
+    private INavigationEvents mNavigationEventHandler;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -46,14 +47,9 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
         return v;
     }
 
-    public void setupCardFragment(ArrayList<CardItem> cards) {
-        if (cards != null) {
-            CardListViewFragment fragment = new CardListViewFragment();
-            fragment.setCardData(cards);
-            getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
-        } else {
-            Toast.makeText(getActivity(), getResources().getText(R.string.manifest_error), Toast.LENGTH_SHORT).show();
-        }
+
+    public void setmNavigationEventHandler(INavigationEvents eventHandler) {
+        mNavigationEventHandler = eventHandler;
     }
 
     @Override
@@ -63,12 +59,20 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
             case StartSessionRequest.TYPE:
                 if (JsonDecoder.decodeSessionStart(response)) {
                     mNetworkManager.request(new ManifestRequest());
+                } else {
+                    mNavigationEventHandler.logout();
+
                 }
                 break;
 
             case ManifestRequest.TYPE:
                 ArrayList<CardItem> cards = JsonDecoder.decodeManifest(response);
-                setupCardFragment(cards);
+                if (cards != null) {
+                    mNavigationEventHandler.goToCardListView(cards);
+                } else {
+                    Toast.makeText(getActivity(), getResources().getText(R.string.manifest_error), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }

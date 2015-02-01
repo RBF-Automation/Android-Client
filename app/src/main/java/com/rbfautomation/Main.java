@@ -4,11 +4,15 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import com.rbfautomation.data.CardItem;
+import com.rbfautomation.fragments.CardListViewFragment;
 import com.rbfautomation.fragments.LoginFragment;
 import com.rbfautomation.fragments.SplashFragment;
 
+import java.util.ArrayList;
 
-public class Main extends ActionBarActivity {
+
+public class Main extends ActionBarActivity implements INavigationEvents {
 
     private FragmentManager mFragmentManager;
 
@@ -21,15 +25,39 @@ public class Main extends ActionBarActivity {
         Settings settings = new Settings(this);
 
         if (settings.getToken() == null) {
-            LoginFragment loginFragment = new LoginFragment();
-            mFragmentManager.beginTransaction().add(android.R.id.content, loginFragment).commit();
+            goToLogin();
         } else {
-            SplashFragment splashFragment = new SplashFragment();
-            mFragmentManager.beginTransaction().add(android.R.id.content, splashFragment).commit();
+            goToSplash();
         }
-
-
 
     }
 
+    @Override
+    public void logout() {
+        Settings settings = new Settings(this);
+        settings.setToken(null);
+        goToLogin();
+    }
+
+    public void goToLogin() {
+        LoginFragment loginFragment = new LoginFragment();
+        loginFragment.setmNavigationEventHandler(this);
+        mFragmentManager.beginTransaction().replace(android.R.id.content, loginFragment).commit();
+    }
+
+    @Override
+    public void goToCardListView(ArrayList<CardItem> cards) {
+        CardListViewFragment fragment = new CardListViewFragment();
+        fragment.setmNavigationEventHandler(this);
+        fragment.setCardData(cards);
+        getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
+
+    }
+
+    @Override
+    public void goToSplash() {
+        SplashFragment fragment = new SplashFragment();
+        fragment.setmNavigationEventHandler(this);
+        mFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit();
+    }
 }

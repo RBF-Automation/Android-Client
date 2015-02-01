@@ -2,7 +2,6 @@ package com.rbfautomation.fragments;
 
 
 import android.app.ListFragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -13,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
-import com.rbfautomation.Settings;
 import com.rbfautomation.data.CardItem;
 import com.rbfautomation.views.CardListAdapter;
 
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 public class CardListViewFragment extends ListFragment implements View.OnClickListener {
 
     ArrayList<CardItem> mCardData;
+    private INavigationEvents mNavigationEventHandler;
 
     private Button mLogoutButton;
 
@@ -34,20 +34,13 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.view_card, mCardData);
         setListAdapter(cardListAdapter);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.card_list_view, null);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //getWindow().setStatusBarColor(getResources().getColor(R.color.primaryAccent));
-        }
 
         ActionBarActivity activity = (ActionBarActivity) getActivity();
 
@@ -74,18 +67,15 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
         return v;
     }
 
-    private void logout() {
-        Settings settings = new Settings(getActivity());
-        settings.setToken(null);
-        LoginFragment loginFragment = new LoginFragment();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, loginFragment).commit();
+    public void setmNavigationEventHandler(INavigationEvents eventHandler) {
+        mNavigationEventHandler = eventHandler;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout_button:
-                logout();
+                mNavigationEventHandler.logout();
                 break;
         }
     }
