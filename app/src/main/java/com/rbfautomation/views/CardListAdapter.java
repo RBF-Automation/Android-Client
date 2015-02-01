@@ -24,16 +24,16 @@ public class CardListAdapter extends ArrayAdapter<CardItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		CardItem cardItem = getItem(position);
+		//CardItem cardItem = getItem(position);
 		
-		CardView card = (CardView) mCache.get(cardItem.getId());
+		//CardView card = (CardView) mCache.get(cardItem.getId());
 
-		if (card != null) {
-			return card;
-		}
+		//if (card != null) {
+		//	return card;
+		//}
 		
 		CardView view = CardViewFactory.getView(getItem(position), mContext);
-		mCache.put(cardItem.getId(), view);
+		//mCache.put(cardItem.getId(), view);
 		
 		return view;
 		

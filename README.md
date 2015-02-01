@@ -23,3 +23,14 @@ Verify the key is in the keystore
     keytool -list -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
 
 Put the keystore in /res/raw/keystore.bsk
+
+
+NOTES:
+
+    {
+        "id": 123,
+        "type": 0,
+        "name": "name",
+        "off": "off",
+        "on": "on"
+    }
