@@ -25,6 +25,7 @@ public class JsonDecoder {
                 switch (type) {
                     case SwitchCardItem.TYPE:
                         cards.add(new SwitchCardItem(
+                                (int) obj.get("id"),
                                 (String) obj.get("name"),
                                 (String) obj.get("btn_on"),
                                 (String) obj.get("btn_off")

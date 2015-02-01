@@ -5,20 +5,25 @@ import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.rbfautomation.R;
+import com.rbfautomation.data.SwitchCardItem;
+import com.rbfautomation.network.NetworkManager;
+import com.rbfautomation.network.requests.SetSwitchRequest;
 
 
 public class SwitchCard extends CardView {
 
 	private Context mContext;
 	private View mBody;
-	private TextView mBodyText;
     private Button mOnButton, mOffButton;
 
-	public SwitchCard(Context context) {
-		super(context);
+    private SwitchCardItem mCardItem;
+
+    private NetworkManager mNetworkManager;
+
+	public SwitchCard(Context context, SwitchCardItem cardItem) {
+		super(context, cardItem);
 	}
 	
 	public SwitchCard(Context context, AttributeSet attrs) {
@@ -33,6 +38,8 @@ public class SwitchCard extends CardView {
 	public void setupView(Context context) {
 		super.setupView(context);
 		mContext = context;
+
+        mCardItem = (SwitchCardItem) getCardItem();
 		
 		mBody = inflateBody(R.layout.switch_card_body);
 
@@ -41,17 +48,14 @@ public class SwitchCard extends CardView {
 
         mOnButton.setOnClickListener(this);
         mOffButton.setOnClickListener(this);
-		
+
+        setHeader(mCardItem.getName());
+        mOnButton.setText(mCardItem.getOnButtonText());
+        mOffButton.setText(mCardItem.getOffButtonText());
+
+        mNetworkManager = new NetworkManager(null, context);
 	}
 
-    public void setOnButtonText(String text) {
-        mOnButton.setText(text);
-    }
-
-    public void setOffButtonText(String text) {
-        mOffButton.setText(text);
-    }
-	
 	@Override
 	public int getContextMenuResource() {
 		return R.menu.test_card;
@@ -68,9 +72,13 @@ public class SwitchCard extends CardView {
 		super.onClick(v);
 		
 		switch (v.getId()) {
-			//case R.id.switch_body_text:
-			//	//TODO: navigation intent.
-			//	break;
+			case R.id.on_button:
+                mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), 1));
+                break;
+
+            case R.id.off_button:
+                mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), 0));
+                break;
 	
 			default:
 				break;

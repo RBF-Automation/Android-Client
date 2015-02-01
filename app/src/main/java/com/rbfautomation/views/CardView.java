@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rbfautomation.R;
+import com.rbfautomation.data.CardItem;
 
 
 public abstract class CardView extends LinearLayout implements OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -21,9 +22,11 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	private Context mContext;
 	private LayoutInflater mInflater;
     private TextView mHeaderText;
+    private CardItem mCardItem;
 
-	public CardView(Context context) {
+	public CardView(Context context, CardItem cardItem) {
 		super(context);
+        mCardItem = cardItem;
 		setupView(context);
 	}
 	
@@ -82,6 +85,8 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 		return mInflater.inflate(layout, mContentBody);
 	}
 	
-	
+	public CardItem getCardItem() {
+        return mCardItem;
+    }
 	
 }

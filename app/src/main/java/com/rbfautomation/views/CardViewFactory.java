@@ -22,11 +22,7 @@ public class CardViewFactory {
 	}
 
 	public static CardView populateSwitchCard(SwitchCardItem cardItem, Context context) {
-
-        SwitchCard card = new SwitchCard(context);
-        card.setHeader(cardItem.getName());
-        card.setOnButtonText(cardItem.getOnButtonText());
-        card.setOffButtonText(cardItem.getOffButtonText());
+        SwitchCard card = new SwitchCard(context, cardItem);
 
 		return card;
 	}

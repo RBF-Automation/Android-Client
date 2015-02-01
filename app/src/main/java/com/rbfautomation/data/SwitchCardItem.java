@@ -7,8 +7,8 @@ public class SwitchCardItem extends CardItem {
 
     private String mOnButtonText, mOffButtonText;
     
-    public SwitchCardItem(String name, String onButtonText, String offButtonText) {
-        super(name);
+    public SwitchCardItem(int remoteId, String name, String onButtonText, String offButtonText) {
+        super(remoteId, name);
         mOnButtonText = onButtonText;
         mOffButtonText = offButtonText;
     }

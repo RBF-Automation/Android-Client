@@ -22,13 +22,15 @@ public class NetworkManager implements MakeRequest.OnRequsetListener {
     }
 
     public void request(Request request) {
-        MakeRequest r = new MakeRequest(request, this, mContext); //TEMP
-        r.execute();
+        MakeRequest serverRequest = new MakeRequest(request, this, mContext);
+        serverRequest.execute();
     }
 
     @Override
     public void onResponse(String response, Request request) {
-        mEventHandler.onCompleteRequest(request, response); //PROCESS JSON HERE
+        if (mEventHandler != null) {
+            mEventHandler.onCompleteRequest(request, response);
+        }
     }
 
 }

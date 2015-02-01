@@ -10,6 +10,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+
 /**
  * Created by brian on 1/31/15.
  */
@@ -32,9 +34,10 @@ public class MakeRequest extends AsyncTask<String, Void, String> {
         HttpPost httpPost = new HttpPost(Credentials.HOST + mRequest.getRequestUrl());
 
         try {
+            httpPost.setEntity(mRequest.getRequestParamaters());
             HttpResponse result = client.execute(httpPost);
             return EntityUtils.toString(result.getEntity());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

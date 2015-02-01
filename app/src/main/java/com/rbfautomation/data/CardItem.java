@@ -2,21 +2,18 @@ package com.rbfautomation.data;
 
 public abstract class CardItem {
 
-    private String            mName;
-    private long mId;
+    private String mName;
+    private int mRemoteId;
 
-    public CardItem(String name) {
+    public CardItem(int remoteId, String name) {
+        mRemoteId = remoteId;
         mName = name;
     }
 
     public abstract int getType();
     
-    protected void setId(long id) {
-        mId = id;
-    }
-    
-    public long getId() {
-        return mId;
+    public int getRemoteId() {
+        return mRemoteId;
     }
     
     public String getName() {
