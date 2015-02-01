@@ -45,4 +45,31 @@ public class JsonDecoder {
         return null;
     }
 
+    public static String decodeToken(String json) {
+        try {
+            JSONObject obj = new JSONObject(json);
+            if (obj.getBoolean("result")) {
+                return obj.getString("token");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean decodeSessionStart(String json) {
+        try {
+            JSONObject obj = new JSONObject(json);
+            if (obj.getBoolean("result")) {
+                return true;
+            }
+            return false;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

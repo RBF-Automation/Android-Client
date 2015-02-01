@@ -16,9 +16,20 @@ import java.security.KeyStore;
 
 public class SecureHttpClient extends DefaultHttpClient {
 
-    final Context mContext;
+    private final Context mContext;
 
-    public SecureHttpClient(Context context) {
+    private static SecureHttpClient mHttpClient = null;
+
+
+    public static SecureHttpClient getSecureHttpClient(Context context) {
+        if( mHttpClient == null){
+            mHttpClient = new SecureHttpClient(context);
+        }
+        return mHttpClient;
+    }
+
+
+    private SecureHttpClient(Context context) {
         mContext = context;
     }
 

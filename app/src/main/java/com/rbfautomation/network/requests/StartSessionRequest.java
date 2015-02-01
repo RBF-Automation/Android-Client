@@ -8,23 +8,21 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
- * Created by brian on 1/31/15.
+ * Created by brian on 2/1/15.
  */
-public class SetSwitchRequest extends Request {
+public class StartSessionRequest extends Request {
 
-    public static final int TYPE = 1;
+    public static final int TYPE = 3;
 
-    private int mRemoteId, mState;
+    private String mToken;
 
-    public SetSwitchRequest(int remoteId, int state) { //add security, probably at network level
-        mRemoteId = remoteId;
-        mState = state;
+    public StartSessionRequest(String token) {
+        mToken = token;
     }
 
     public UrlEncodedFormEntity getRequestParameters() throws UnsupportedEncodingException {
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("id", Integer.toString(mRemoteId)));
-        nameValuePairs.add(new BasicNameValuePair("state", Integer.toString(mState)));
+        nameValuePairs.add(new BasicNameValuePair("token", mToken));
         return new UrlEncodedFormEntity(nameValuePairs);
     }
 
@@ -35,7 +33,6 @@ public class SetSwitchRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/api/setSwitch.php";
+        return "/api/startSession.php";
     }
-
 }

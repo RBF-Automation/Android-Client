@@ -13,5 +13,5 @@ public abstract class Request {
 
     public abstract String getRequestUrl();
 
-    public abstract UrlEncodedFormEntity getRequestParamaters() throws UnsupportedEncodingException;
+    public abstract UrlEncodedFormEntity getRequestParameters() throws UnsupportedEncodingException;
 }

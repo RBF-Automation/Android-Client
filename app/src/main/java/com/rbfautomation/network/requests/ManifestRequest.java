@@ -9,7 +9,7 @@ public class ManifestRequest extends Request {
 
     public static final int TYPE = 0;
 
-    public UrlEncodedFormEntity getRequestParamaters() {
+    public UrlEncodedFormEntity getRequestParameters() {
         return null;
     }
 
@@ -20,6 +20,6 @@ public class ManifestRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/index.php";
+        return "/api/getManifest.php";
     }
 }

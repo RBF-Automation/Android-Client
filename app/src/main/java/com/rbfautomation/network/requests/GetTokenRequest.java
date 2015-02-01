@@ -8,23 +8,23 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
- * Created by brian on 1/31/15.
+ * Created by brian on 2/1/15.
  */
-public class SetSwitchRequest extends Request {
+public class GetTokenRequest extends Request {
 
-    public static final int TYPE = 1;
+    public static final int TYPE = 2;
 
-    private int mRemoteId, mState;
+    private String mUsername, mPassword;
 
-    public SetSwitchRequest(int remoteId, int state) { //add security, probably at network level
-        mRemoteId = remoteId;
-        mState = state;
+    public GetTokenRequest(String username, String password) {
+        mUsername = username;
+        mPassword = password;
     }
 
     public UrlEncodedFormEntity getRequestParameters() throws UnsupportedEncodingException {
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("id", Integer.toString(mRemoteId)));
-        nameValuePairs.add(new BasicNameValuePair("state", Integer.toString(mState)));
+        nameValuePairs.add(new BasicNameValuePair("username", mUsername));
+        nameValuePairs.add(new BasicNameValuePair("password", mPassword));
         return new UrlEncodedFormEntity(nameValuePairs);
     }
 
@@ -35,7 +35,7 @@ public class SetSwitchRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/api/setSwitch.php";
+        return "/api/authenticate.php";
     }
-
 }
+

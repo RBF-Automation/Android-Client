@@ -29,12 +29,12 @@ public class MakeRequest extends AsyncTask<String, Void, String> {
     }
 
     private String startRequest() {
-        DefaultHttpClient client = new SecureHttpClient(mContext);
+        DefaultHttpClient client = SecureHttpClient.getSecureHttpClient(mContext);
 
         HttpPost httpPost = new HttpPost(Credentials.HOST + mRequest.getRequestUrl());
 
         try {
-            httpPost.setEntity(mRequest.getRequestParamaters());
+            httpPost.setEntity(mRequest.getRequestParameters());
             HttpResponse result = client.execute(httpPost);
             return EntityUtils.toString(result.getEntity());
         } catch (IOException e) {
