@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,9 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
     }
 
     private void login() {
+        InputMethodManager inputMethodManager = (InputMethodManager)  getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
         NetworkManager networkManager = new NetworkManager(this, getActivity());
         networkManager.request(new GetTokenRequest(mUsername.getText().toString(), mPassword.getText().toString()));
     }
@@ -87,7 +91,7 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
                 if (token != null) {
                     saveToken(token);
                 } else {
-                    Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getText(R.string.login_error), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

@@ -11,17 +11,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.rbfautomation.R;
+import com.rbfautomation.Settings;
 import com.rbfautomation.data.CardItem;
 import com.rbfautomation.views.CardListAdapter;
 
 import java.util.ArrayList;
 
 
-public class CardListViewFragment extends ListFragment {
+public class CardListViewFragment extends ListFragment implements View.OnClickListener {
 
     ArrayList<CardItem> mCardData;
+
+    private Button mLogoutButton;
 
     public void setCardData(ArrayList<CardItem> cardData) {
         mCardData = cardData;
@@ -63,7 +67,26 @@ public class CardListViewFragment extends ListFragment {
         activity.getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
 
+
+        mLogoutButton = (Button) v.findViewById(R.id.logout_button);
+        mLogoutButton.setOnClickListener(this);
+
         return v;
     }
 
+    private void logout() {
+        Settings settings = new Settings(getActivity());
+        settings.setToken(null);
+        LoginFragment loginFragment = new LoginFragment();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, loginFragment).commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.logout_button:
+                logout();
+                break;
+        }
+    }
 }

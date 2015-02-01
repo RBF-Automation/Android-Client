@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.rbfautomation.R;
 import com.rbfautomation.Settings;
@@ -46,9 +47,13 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
     }
 
     public void setupCardFragment(ArrayList<CardItem> cards) {
-        CardListViewFragment fragment = new CardListViewFragment();
-        fragment.setCardData(cards);
-        getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
+        if (cards != null) {
+            CardListViewFragment fragment = new CardListViewFragment();
+            fragment.setCardData(cards);
+            getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
+        } else {
+            Toast.makeText(getActivity(), getResources().getText(R.string.manifest_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class JsonDecoder {
 
     public static ArrayList<CardItem> decodeManifest(String response) {
+
         try {
 
             ArrayList<CardItem> cards = new ArrayList<>();
@@ -32,8 +33,6 @@ public class JsonDecoder {
                         ));
                         break;
                 }
-
-
             }
 
             return cards;

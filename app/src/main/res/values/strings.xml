@@ -3,7 +3,10 @@
 
     <string name="app_name">RBF Automation</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="action_settings">Settings</string>
+    <string name="manifest_error">Error downloading manifest</string>
+    <string name="login_error">Login Failed</string>
 
     <string name="show_message">- Show Original Message -</string>
     <string name="hide_message">- Hide Original Message -</string>

@@ -30,7 +30,25 @@
                   android:divider="@null"
             >
         </ListView>
-        <!-- The navigation drawer -->
+
+        <LinearLayout
+            android:layout_width="240dp"
+            android:id="@+id/left_drawer"
+            android:layout_gravity="start"
+            android:layout_height="match_parent"
+            android:background="@color/menuBackground"
+            android:orientation="vertical"
+            >
+        <Button
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:textColor="@color/buttonTextColor"
+            android:id="@+id/logout_button"
+            android:text="@string/logout"
+            android:layout_height="50dp"/>
+        </LinearLayout>
+        <!-- The navigation drawer
         <ListView android:id="@+id/left_drawer"
                   android:layout_width="240dp"
                   android:layout_height="match_parent"
@@ -39,6 +57,7 @@
                   android:divider="@android:color/transparent"
                   android:dividerHeight="0dp"
                   android:background="@color/menuBackground"/>
+                   -->
     </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>
