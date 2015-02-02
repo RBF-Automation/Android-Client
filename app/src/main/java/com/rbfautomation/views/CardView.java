@@ -17,6 +17,8 @@ import com.rbfautomation.data.CardItem;
 
 public abstract class CardView extends LinearLayout implements OnClickListener, PopupMenu.OnMenuItemClickListener {
 
+    public static final int NO_MENU = 0x0;
+
 	private LinearLayout mRootView;
 	private FrameLayout mContentBody;
 	private Context mContext;
@@ -45,10 +47,14 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 		mContext = context;
 		mRootView = (LinearLayout) mInflater.inflate(R.layout.view_card, this);
 		
-		mRootView.findViewById(R.id.context_menu).setOnClickListener(this);
-		
         mHeaderText = (TextView) mRootView.findViewById(R.id.card_header);
 		mContentBody = (FrameLayout) mRootView.findViewById(R.id.content_body);
+
+        if (getContextMenuResource() == NO_MENU) {
+            mRootView.findViewById(R.id.context_menu).setVisibility(View.INVISIBLE);
+        } else {
+            mRootView.findViewById(R.id.context_menu).setOnClickListener(this);
+        }
 	}
 
 	@Override

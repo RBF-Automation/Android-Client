@@ -58,7 +58,7 @@ public class SwitchCard extends CardView {
 
 	@Override
 	public int getContextMenuResource() {
-		return R.menu.test_card;
+		return CardView.NO_MENU;
 	}
 
 	@Override
