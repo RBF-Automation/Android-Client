@@ -8,6 +8,8 @@ import com.rbfautomation.data.CardItem;
 import com.rbfautomation.fragments.CardListViewFragment;
 import com.rbfautomation.fragments.LoginFragment;
 import com.rbfautomation.fragments.SplashFragment;
+import com.rbfautomation.network.NetworkManager;
+import com.rbfautomation.network.requests.EndSessionRequest;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,8 @@ public class Main extends ActionBarActivity implements INavigationEvents {
     public void logout() {
         Settings settings = new Settings(this);
         settings.setToken(null);
+        NetworkManager networkManager = new NetworkManager(null, this);
+        networkManager.request(new EndSessionRequest());
         goToLogin();
     }
 
