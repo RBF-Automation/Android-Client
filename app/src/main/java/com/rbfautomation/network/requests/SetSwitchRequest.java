@@ -13,18 +13,21 @@ import java.util.ArrayList;
 public class SetSwitchRequest extends Request {
 
     public static final int TYPE = 1;
+    private static final String API_CALL = "/api/setSwitch.php";
+    private static final String ID = "id";
+    private static final String STATE = "state";
 
     private int mRemoteId, mState;
 
-    public SetSwitchRequest(int remoteId, int state) { //add security, probably at network level
+    public SetSwitchRequest(int remoteId, int state) {
         mRemoteId = remoteId;
         mState = state;
     }
 
     public UrlEncodedFormEntity getRequestParameters() throws UnsupportedEncodingException {
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("id", Integer.toString(mRemoteId)));
-        nameValuePairs.add(new BasicNameValuePair("state", Integer.toString(mState)));
+        nameValuePairs.add(new BasicNameValuePair(ID, Integer.toString(mRemoteId)));
+        nameValuePairs.add(new BasicNameValuePair(STATE, Integer.toString(mState)));
         return new UrlEncodedFormEntity(nameValuePairs);
     }
 
@@ -35,7 +38,7 @@ public class SetSwitchRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/api/setSwitch.php";
+        return API_CALL;
     }
 
 }

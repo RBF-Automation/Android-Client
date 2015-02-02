@@ -4,6 +4,7 @@ package com.rbfautomation.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,12 @@ import android.widget.Toast;
 import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.Settings;
-import com.rbfautomation.data.CardItem;
-import com.rbfautomation.data.JsonDecoder;
 import com.rbfautomation.network.NetworkManager;
-import com.rbfautomation.network.requests.ManifestRequest;
-import com.rbfautomation.network.requests.Request;
+import com.rbfautomation.network.requests.GetManifestRequest;
 import com.rbfautomation.network.requests.StartSessionRequest;
-
-import java.util.ArrayList;
+import com.rbfautomation.network.responses.GetManifestResponse;
+import com.rbfautomation.network.responses.Response;
+import com.rbfautomation.network.responses.StartSessionResponse;
 
 
 public class SplashFragment extends Fragment implements NetworkManager.NetworkEventListener {
@@ -53,23 +52,23 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
     }
 
     @Override
-    public void onCompleteRequest(Request request, String response) {
-        switch (request.getType()) {
+    public void onCompleteRequest(Response response) {
+        switch (response.getType()) {
 
             case StartSessionRequest.TYPE:
-                if (JsonDecoder.decodeSessionStart(response)) {
-                    mNetworkManager.request(new ManifestRequest());
+                if (((StartSessionResponse)response).sessionStarted()) {
+                    mNetworkManager.request(new GetManifestRequest());
                 } else {
                     mNavigationEventHandler.logout();
-
                 }
                 break;
 
-            case ManifestRequest.TYPE:
-                ArrayList<CardItem> cards = JsonDecoder.decodeManifest(response);
-                if (cards != null) {
-                    mNavigationEventHandler.goToCardListView(cards);
+            case GetManifestRequest.TYPE:
+
+                if (!response.hasError()) {
+                    mNavigationEventHandler.goToCardListView(((GetManifestResponse)response).getCards());
                 } else {
+                    Log.e("JSON", response.getError());
                     Toast.makeText(getActivity(), getResources().getText(R.string.manifest_error), Toast.LENGTH_SHORT).show();
                 }
 

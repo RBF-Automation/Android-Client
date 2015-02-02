@@ -7,24 +7,31 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.data.CardItem;
+import com.rbfautomation.network.NetworkManager;
+import com.rbfautomation.network.requests.GetUserInformationRequest;
+import com.rbfautomation.network.responses.GetUserInformationResponse;
+import com.rbfautomation.network.responses.Response;
 import com.rbfautomation.views.CardListAdapter;
 
 import java.util.ArrayList;
 
 
-public class CardListViewFragment extends ListFragment implements View.OnClickListener {
+public class CardListViewFragment extends ListFragment implements View.OnClickListener, NetworkManager.NetworkEventListener {
 
     ArrayList<CardItem> mCardData;
     private INavigationEvents mNavigationEventHandler;
-
+    private NetworkManager mNetworkManager;
+    private TextView mUsernameText;
     private Button mLogoutButton;
 
     public void setCardData(ArrayList<CardItem> cardData) {
@@ -60,9 +67,12 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
         activity.getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
 
-
+        mUsernameText = (TextView) v.findViewById(R.id.username_text);
         mLogoutButton = (Button) v.findViewById(R.id.logout_button);
         mLogoutButton.setOnClickListener(this);
+
+        mNetworkManager = new NetworkManager(this, getActivity());
+        mNetworkManager.request(new GetUserInformationRequest());
 
         return v;
     }
@@ -76,6 +86,19 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.logout_button:
                 mNavigationEventHandler.logout();
+                break;
+        }
+    }
+
+    @Override
+    public void onCompleteRequest(Response response) {
+        switch (response.getType()) {
+            case GetUserInformationRequest.TYPE:
+                if (!response.hasError()) {
+                    mUsernameText.setText(((GetUserInformationResponse) response).getUsername());
+                } else {
+                    //error
+                }
                 break;
         }
     }

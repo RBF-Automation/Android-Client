@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class StartSessionRequest extends Request {
 
     public static final int TYPE = 3;
+    private static final String API_CALL = "/api/startSession.php";
 
     private String mToken;
 
@@ -33,6 +34,6 @@ public class StartSessionRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/api/startSession.php";
+        return API_CALL;
     }
 }

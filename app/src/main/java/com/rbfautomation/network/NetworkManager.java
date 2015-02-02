@@ -3,6 +3,8 @@ package com.rbfautomation.network;
 import android.content.Context;
 
 import com.rbfautomation.network.requests.Request;
+import com.rbfautomation.network.responses.Response;
+import com.rbfautomation.network.responses.ResponseFactory;
 
 /**
  * Created by brian on 1/31/15.
@@ -10,7 +12,7 @@ import com.rbfautomation.network.requests.Request;
 public class NetworkManager implements MakeRequest.OnRequsetListener {
 
     public interface NetworkEventListener {
-        void onCompleteRequest(Request request, String response);
+        void onCompleteRequest(Response response);
     }
 
     private NetworkEventListener mEventHandler;
@@ -27,9 +29,9 @@ public class NetworkManager implements MakeRequest.OnRequsetListener {
     }
 
     @Override
-    public void onResponse(String response, Request request) {
+    public void onResponse(String responseText, Request request) {
         if (mEventHandler != null) {
-            mEventHandler.onCompleteRequest(request, response);
+            mEventHandler.onCompleteRequest(ResponseFactory.createResponse(request, responseText));
         }
     }
 

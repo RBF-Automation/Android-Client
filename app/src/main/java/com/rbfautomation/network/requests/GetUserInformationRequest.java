@@ -7,12 +7,12 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by brian on 2/2/15.
  */
-public class EndSessionRequest extends Request {
+public class GetUserInformationRequest extends Request {
 
-    public static final int TYPE = 4;
-    private static final String API_CALL = "/api/endSession.php";
+    public static final int TYPE = 5;
+    private static final String API_CALL = "/api/getUserInformation.php";
 
-    public EndSessionRequest() {
+    public GetUserInformationRequest() {
     }
 
     public UrlEncodedFormEntity getRequestParameters() throws UnsupportedEncodingException {

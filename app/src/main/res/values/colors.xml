@@ -11,6 +11,8 @@
     <color name="buttonPressed">#F0F0F0</color>
     <color name="buttonTextColor">#555555</color>
 
+    <color name="black">#000000</color>
+
 
     <color name="action_bar">#33AD5C</color>
     <color name="card_list_background">#E4E4E4</color>

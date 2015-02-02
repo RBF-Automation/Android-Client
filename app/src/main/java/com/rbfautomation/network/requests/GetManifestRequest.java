@@ -5,9 +5,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 /**
  * Created by brian on 1/31/15.
  */
-public class ManifestRequest extends Request {
+public class GetManifestRequest extends Request {
 
     public static final int TYPE = 0;
+    private static final String API_CALL = "/api/getManifest.php";
 
     public UrlEncodedFormEntity getRequestParameters() {
         return null;
@@ -20,6 +21,6 @@ public class ManifestRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/api/getManifest.php";
+        return API_CALL;
     }
 }

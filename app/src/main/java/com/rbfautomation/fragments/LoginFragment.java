@@ -14,10 +14,10 @@ import android.widget.Toast;
 import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.Settings;
-import com.rbfautomation.data.JsonDecoder;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetTokenRequest;
-import com.rbfautomation.network.requests.Request;
+import com.rbfautomation.network.responses.GetTokenResponse;
+import com.rbfautomation.network.responses.Response;
 
 /**
  * Created by brian on 2/1/15.
@@ -77,15 +77,14 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
     }
 
     @Override
-    public void onCompleteRequest(Request request, String response) {
-        switch (request.getType()) {
+    public void onCompleteRequest(Response response) {
+        switch (response.getType()) {
 
             case GetTokenRequest.TYPE:
-                String token = JsonDecoder.decodeToken(response);
-                if (token != null) {
-                    saveToken(token);
+                if (!response.hasError()) {
+                    saveToken(((GetTokenResponse)response).getToken());
                 } else {
-                    Toast.makeText(getActivity(), getResources().getText(R.string.login_error), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.getError(), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

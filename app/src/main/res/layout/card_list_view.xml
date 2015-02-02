@@ -39,14 +39,24 @@
             android:background="@color/menuBackground"
             android:orientation="vertical"
             >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12pt"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/black"
+                android:id="@+id/username_text"
+                />
         <Button
             android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/button"
-            android:textColor="@color/buttonTextColor"
+            android:textColor="@color/header_text_color"
             android:id="@+id/logout_button"
             android:text="@string/logout"
-            android:layout_height="50dp"/>
+            />
         </LinearLayout>
         <!-- The navigation drawer
         <ListView android:id="@+id/left_drawer"

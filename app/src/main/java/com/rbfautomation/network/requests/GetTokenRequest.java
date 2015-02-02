@@ -13,6 +13,9 @@ import java.util.ArrayList;
 public class GetTokenRequest extends Request {
 
     public static final int TYPE = 2;
+    private static final String API_CALL = "/api/authenticate.php";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
 
     private String mUsername, mPassword;
 
@@ -23,8 +26,8 @@ public class GetTokenRequest extends Request {
 
     public UrlEncodedFormEntity getRequestParameters() throws UnsupportedEncodingException {
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("username", mUsername));
-        nameValuePairs.add(new BasicNameValuePair("password", mPassword));
+        nameValuePairs.add(new BasicNameValuePair(USERNAME, mUsername));
+        nameValuePairs.add(new BasicNameValuePair(PASSWORD, mPassword));
         return new UrlEncodedFormEntity(nameValuePairs);
     }
 
@@ -35,7 +38,7 @@ public class GetTokenRequest extends Request {
 
     @Override
     public String getRequestUrl() {
-        return "/api/authenticate.php";
+        return API_CALL;
     }
 }
 
