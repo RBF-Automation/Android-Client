@@ -17,9 +17,9 @@ import java.io.IOException;
  */
 public class MakeRequest extends AsyncTask<String, Void, String> {
 
-    private Context mContext;
-    private Request mRequest;
-    private OnRequsetListener mEventHandler;
+    private final  Context mContext;
+    private final  Request mRequest;
+    private final OnRequsetListener mEventHandler;
 
 
     public MakeRequest(Request request, OnRequsetListener eventHandler, Context context) {
@@ -50,7 +50,9 @@ public class MakeRequest extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        mEventHandler.onResponse(result, mRequest);
+        if (mEventHandler != null) {
+            mEventHandler.onResponse(result, mRequest);
+        }
     }
 
 

@@ -84,7 +84,7 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
                 if (!response.hasError()) {
                     saveToken(((GetTokenResponse)response).getToken());
                 } else {
-                    Toast.makeText(getActivity(), response.getError(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

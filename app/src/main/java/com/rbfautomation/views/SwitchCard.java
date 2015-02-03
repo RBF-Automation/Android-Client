@@ -2,17 +2,21 @@ package com.rbfautomation.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.rbfautomation.R;
 import com.rbfautomation.data.SwitchCardItem;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.SetSwitchRequest;
+import com.rbfautomation.network.responses.ErrorCodes;
+import com.rbfautomation.network.responses.Response;
 
 
-public class SwitchCard extends CardView {
+public class SwitchCard extends CardView implements NetworkManager.NetworkEventListener {
 
 	private Context mContext;
 	private View mBody;
@@ -53,7 +57,7 @@ public class SwitchCard extends CardView {
         mOnButton.setText(mCardItem.getOnButtonText());
         mOffButton.setText(mCardItem.getOffButtonText());
 
-        mNetworkManager = new NetworkManager(null, context);
+        mNetworkManager = new NetworkManager(this, context);
 	}
 
 	@Override
@@ -85,4 +89,23 @@ public class SwitchCard extends CardView {
 		}
 	}
 
+    @Override
+    public void onCompleteRequest(Response response) {
+
+        if (response.hasError()) {
+            handleResponseError(response);
+        }
+
+    }
+
+    private void handleResponseError(Response response) {
+        switch (response.getErrorCode()) {
+            case ErrorCodes.NOT_LOGGED_IN:
+                Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                break;
+            case ErrorCodes.JSON_PARSE_ERROR:
+                Log.e("JSON", response.getErrorMessage());
+                break;
+        }
+    }
 }

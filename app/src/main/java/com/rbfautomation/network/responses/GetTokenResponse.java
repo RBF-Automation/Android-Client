@@ -21,15 +21,15 @@ public class GetTokenResponse extends Response {
         try {
             JSONObject obj = new JSONObject(responseText);
 
-            if (obj.getBoolean("result")) {
+            if (obj.getBoolean(RESULT)) {
                 mToken = obj.getString("token");
             } else {
-                setError(obj.getString("message"));
+                setError(obj.getInt(ERROR_CODE), obj.getString(MESSAGE));
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
-            setError("ERROR parsing JSON");
+            setError(ErrorCodes.JSON_PARSE_ERROR, e.getMessage());
         }
     }
 

@@ -20,13 +20,13 @@ public class GetUserInformationResponse extends Response {
     protected void decodeResponseText(String responseText) {
         try {
             JSONObject obj = new JSONObject(responseText);
-            if (obj.getBoolean("result")) {
+            if (obj.getBoolean(RESULT)) {
                 mUsername = obj.getString("username");
             }
 
         } catch (JSONException e) {
             e.printStackTrace(); //FIX
-            setError("JSON Parse error");
+            setError(ErrorCodes.JSON_PARSE_ERROR, e.getMessage());
         }
     }
 

@@ -37,7 +37,7 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
         Settings settings = new Settings(activity);
 
         mNetworkManager = new NetworkManager(this, activity.getBaseContext());
-        mNetworkManager.request(new StartSessionRequest(settings.getToken()));
+        mNetworkManager.startSession(settings.getToken());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
                 if (!response.hasError()) {
                     mNavigationEventHandler.goToCardListView(((GetManifestResponse)response).getCards());
                 } else {
-                    Log.e("JSON", response.getError());
+                    Log.e("ERROR", response.getErrorMessage());
                     Toast.makeText(getActivity(), getResources().getText(R.string.manifest_error), Toast.LENGTH_SHORT).show();
                 }
 

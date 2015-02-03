@@ -20,14 +20,14 @@ public class StartSessionResponse extends Response {
     protected void decodeResponseText(String responseText) {
         try {
             JSONObject obj = new JSONObject(responseText);
-            if (obj.getBoolean("result")) {
+            if (obj.getBoolean(RESULT)) {
                 mSessionStarted = true;
             } else {
                 mSessionStarted = false;
             }
 
         } catch (JSONException e) {
-            e.printStackTrace(); //report error
+            setError(ErrorCodes.JSON_PARSE_ERROR, e.getMessage());
         }
     }
 

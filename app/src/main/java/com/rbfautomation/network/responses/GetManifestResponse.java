@@ -47,7 +47,7 @@ public class GetManifestResponse extends Response {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            setError("error parsing json");
+            setError(ErrorCodes.JSON_PARSE_ERROR, e.getMessage());
         }
     }
 

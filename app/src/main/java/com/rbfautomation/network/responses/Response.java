@@ -7,13 +7,20 @@ import com.rbfautomation.network.requests.Request;
  */
 public abstract class Response {
 
+    public static final String RESULT = "result";
+    public static final String ERROR_CODE = "errorCode";
+    public static final String MESSAGE = "message";
+
+
     private final Request mRequest;
     private boolean mIsError;
+    private int mErrorCode;
     private String mErrorMessage;
 
     public Response(Request request, String responseText) {
         mRequest = request;
         mIsError = false;
+        mErrorCode = -1;
         decodeResponseText(responseText);
     }
 
@@ -27,16 +34,27 @@ public abstract class Response {
         return mRequest.getType();
     }
 
-    protected void setError(String message) {
+    protected void setError(int errorCode, String message) {
         mIsError = true;
+        mErrorCode = errorCode;
         mErrorMessage = message;
+    }
+
+    protected void setError(int errorCode) {
+        mIsError = true;
+        mErrorCode = errorCode;
+        mErrorMessage = "";
     }
 
     public boolean hasError() {
         return mIsError;
     }
 
-    public String getError() {
+    public String getErrorMessage() {
         return mErrorMessage;
+    }
+
+    public int getErrorCode() {
+        return mErrorCode;
     }
 }
