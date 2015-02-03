@@ -1,6 +1,9 @@
 package com.rbfautomation.data;
 
-public abstract class CardItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public abstract class CardItem implements Parcelable {
 
     private String mName;
     private int mRemoteId;
@@ -8,6 +11,11 @@ public abstract class CardItem {
     public CardItem(int remoteId, String name) {
         mRemoteId = remoteId;
         mName = name;
+    }
+
+    public CardItem(Parcel parcel) {
+        mName = parcel.readString();
+        mRemoteId = parcel.readInt();
     }
 
     public abstract int getType();
@@ -18,6 +26,12 @@ public abstract class CardItem {
     
     public String getName() {
         return mName;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(mName);
+        parcel.writeInt(mRemoteId);
     }
 
 

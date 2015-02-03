@@ -25,7 +25,7 @@ import com.rbfautomation.views.CardListAdapter;
 import java.util.ArrayList;
 
 
-public class CardListViewFragment extends ListFragment implements View.OnClickListener, NetworkManager.NetworkEventListener {
+public class CardListViewFragment extends ListFragment implements IRbfFragment, View.OnClickListener, NetworkManager.NetworkEventListener {
 
     ArrayList<CardItem> mCardData;
     private INavigationEvents mNavigationEventHandler;
@@ -40,8 +40,22 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mCardData = savedInstanceState.getParcelableArrayList("CardData");
+        }
+
         CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.view_card, mCardData);
         setListAdapter(cardListAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mCardData != null) {
+            outState.putParcelableArrayList("CardData", mCardData);
+        }
     }
 
     @Override

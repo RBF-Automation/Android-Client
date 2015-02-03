@@ -22,7 +22,7 @@ import com.rbfautomation.network.responses.Response;
 /**
  * Created by brian on 2/1/15.
  */
-public class LoginFragment  extends Fragment implements NetworkManager.NetworkEventListener, View.OnClickListener {
+public class LoginFragment  extends Fragment implements IRbfFragment, NetworkManager.NetworkEventListener, View.OnClickListener {
 
     private TextView mUsername, mPassword;
     private Button mLogin;

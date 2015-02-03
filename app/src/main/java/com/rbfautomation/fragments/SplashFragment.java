@@ -21,7 +21,7 @@ import com.rbfautomation.network.responses.Response;
 import com.rbfautomation.network.responses.StartSessionResponse;
 
 
-public class SplashFragment extends Fragment implements NetworkManager.NetworkEventListener {
+public class SplashFragment extends Fragment implements IRbfFragment, NetworkManager.NetworkEventListener {
 
     NetworkManager mNetworkManager;
     private INavigationEvents mNavigationEventHandler;
