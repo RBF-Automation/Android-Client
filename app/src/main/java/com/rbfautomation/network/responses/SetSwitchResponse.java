@@ -18,7 +18,7 @@ public class SetSwitchResponse extends Response {
         try {
             JSONObject obj = new JSONObject(responseText);
             if (!obj.getBoolean(RESULT)) {
-                setError(obj.getInt(ERROR_CODE));
+                setError(obj.getInt(ERROR_CODE), obj.getString(MESSAGE));
             }
 
         } catch (JSONException e) {

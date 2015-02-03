@@ -25,7 +25,6 @@ public class GetUserInformationResponse extends Response {
             }
 
         } catch (JSONException e) {
-            e.printStackTrace(); //FIX
             setError(ErrorCodes.JSON_PARSE_ERROR, e.getMessage());
         }
     }

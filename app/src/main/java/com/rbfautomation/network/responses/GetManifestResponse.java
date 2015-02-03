@@ -46,7 +46,6 @@ public class GetManifestResponse extends Response {
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
             setError(ErrorCodes.JSON_PARSE_ERROR, e.getMessage());
         }
     }
