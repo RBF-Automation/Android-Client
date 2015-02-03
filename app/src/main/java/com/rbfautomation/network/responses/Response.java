@@ -13,8 +13,8 @@ public abstract class Response {
 
     public Response(Request request, String responseText) {
         mRequest = request;
-        decodeResponseText(responseText);
         mIsError = false;
+        decodeResponseText(responseText);
     }
 
     protected abstract void decodeResponseText(String responseText);

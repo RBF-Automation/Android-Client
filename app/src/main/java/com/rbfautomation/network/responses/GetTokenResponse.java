@@ -20,6 +20,7 @@ public class GetTokenResponse extends Response {
     protected void decodeResponseText(String responseText) {
         try {
             JSONObject obj = new JSONObject(responseText);
+
             if (obj.getBoolean("result")) {
                 mToken = obj.getString("token");
             } else {
@@ -28,6 +29,7 @@ public class GetTokenResponse extends Response {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            setError("ERROR parsing JSON");
         }
     }
 
