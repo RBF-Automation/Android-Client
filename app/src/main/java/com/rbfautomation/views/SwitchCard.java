@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.rbfautomation.R;
 import com.rbfautomation.data.SwitchCardItem;
@@ -18,6 +17,10 @@ import com.rbfautomation.network.responses.Response;
 
 public class SwitchCard extends CardView implements NetworkManager.NetworkEventListener {
 
+    private static final int ON = 1;
+    private static final int OFF = 0;
+
+
 	private Context mContext;
 	private View mBody;
     private Button mOnButton, mOffButton;
@@ -26,8 +29,8 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 
     private NetworkManager mNetworkManager;
 
-	public SwitchCard(Context context, SwitchCardItem cardItem) {
-		super(context, cardItem);
+	public SwitchCard(Context context, SwitchCardItem cardItem, CardViewEventHandler eventHandler) {
+		super(context, cardItem, eventHandler);
 	}
 	
 	public SwitchCard(Context context, AttributeSet attrs) {
@@ -77,11 +80,11 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 		
 		switch (v.getId()) {
 			case R.id.on_button:
-                mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), 1));
+                mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), ON));
                 break;
 
             case R.id.off_button:
-                mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), 0));
+                mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), OFF));
                 break;
 	
 			default:
@@ -91,17 +94,16 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 
     @Override
     public void onCompleteRequest(Response response) {
-
         if (response.hasError()) {
             handleResponseError(response);
         }
-
     }
 
     private void handleResponseError(Response response) {
+
         switch (response.getErrorCode()) {
             case ErrorCodes.NOT_LOGGED_IN:
-                Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                getEventHandler().onCardNetworkError(ErrorCodes.NOT_LOGGED_IN, response.getErrorMessage());
                 break;
             case ErrorCodes.JSON_PARSE_ERROR:
                 Log.e("JSON", response.getErrorMessage());

@@ -13,12 +13,14 @@ import java.util.List;
 
 public class CardListAdapter extends ArrayAdapter<CardItem> {
 
-	private Context mContext;
-	private static HashMap<Long, CardView> mCache = new HashMap<Long, CardView>();
+	private final Context mContext;
+    private final CardView.CardViewEventHandler mCardEventHandler;
+    private static HashMap<Long, CardView> mCache = new HashMap<Long, CardView>();
 	
-	public CardListAdapter(Context context, int resource, List<CardItem> objects) {
+	public CardListAdapter(Context context, int resource, List<CardItem> objects, CardView.CardViewEventHandler cardEventHandler) {
 		super(context, resource, objects);
 		mContext = context;
+        mCardEventHandler = cardEventHandler;
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class CardListAdapter extends ArrayAdapter<CardItem> {
 		//	return card;
 		//}
 		
-		CardView view = CardViewFactory.getView(getItem(position), mContext);
+		CardView view = CardViewFactory.getView(getItem(position), mContext, mCardEventHandler);
 		//mCache.put(cardItem.getId(), view);
 		
 		return view;

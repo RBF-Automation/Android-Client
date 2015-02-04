@@ -8,11 +8,11 @@ import com.rbfautomation.data.SwitchCardItem;
 public class CardViewFactory {
 
 	
-	public static CardView getView(CardItem cardItem, Context context) {
+	public static CardView getView(CardItem cardItem, Context context, CardView.CardViewEventHandler cardEventHandler) {
 
 		switch (cardItem.getType()) {
 			case SwitchCardItem.TYPE:
-				return populateSwitchCard((SwitchCardItem)cardItem, context);
+				return populateSwitchCard((SwitchCardItem)cardItem, context, cardEventHandler);
 	
 			default:
 				break;
@@ -21,8 +21,8 @@ public class CardViewFactory {
 		return null;
 	}
 
-	public static CardView populateSwitchCard(SwitchCardItem cardItem, Context context) {
-        SwitchCard card = new SwitchCard(context, cardItem);
+	public static CardView populateSwitchCard(SwitchCardItem cardItem, Context context, CardView.CardViewEventHandler cardEventHandler) {
+        SwitchCard card = new SwitchCard(context, cardItem, cardEventHandler);
 
 		return card;
 	}

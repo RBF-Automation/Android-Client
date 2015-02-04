@@ -46,6 +46,7 @@ public class NetworkManager implements MakeRequest.OnRequsetListener {
     public void recoverRequest(final Response originalResponse) {
         if (mCachedToken != null) {
             MakeRequest serverRequest = new MakeRequest(new StartSessionRequest(mCachedToken), new MakeRequest.OnRequsetListener() {
+                @Override
                 public void onResponse(String responseText, Request request) {
                     StartSessionResponse response = (StartSessionResponse) ResponseFactory.createResponse(request, responseText);
                     if (!response.hasError() && response.sessionStarted()) {

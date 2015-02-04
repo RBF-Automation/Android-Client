@@ -19,16 +19,22 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 
     public static final int NO_MENU = 0x0;
 
+    public interface CardViewEventHandler {
+        void onCardNetworkError(int errorCode, String errorMessage);
+    }
+
 	private LinearLayout mRootView;
 	private FrameLayout mContentBody;
 	private Context mContext;
 	private LayoutInflater mInflater;
     private TextView mHeaderText;
     private CardItem mCardItem;
+    private CardViewEventHandler mEventHandler;
 
-	public CardView(Context context, CardItem cardItem) {
+	public CardView(Context context, CardItem cardItem, CardViewEventHandler eventHandler) {
 		super(context);
         mCardItem = cardItem;
+        mEventHandler = eventHandler;
 		setupView(context);
 	}
 	
@@ -93,6 +99,10 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	
 	public CardItem getCardItem() {
         return mCardItem;
+    }
+
+    public CardViewEventHandler getEventHandler() {
+        return mEventHandler;
     }
 	
 }

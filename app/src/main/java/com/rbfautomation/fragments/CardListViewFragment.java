@@ -12,20 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.data.CardItem;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetUserInformationRequest;
+import com.rbfautomation.network.responses.ErrorCodes;
 import com.rbfautomation.network.responses.GetUserInformationResponse;
 import com.rbfautomation.network.responses.Response;
 import com.rbfautomation.views.CardListAdapter;
+import com.rbfautomation.views.CardView;
 
 import java.util.ArrayList;
 
 
-public class CardListViewFragment extends ListFragment implements IRbfFragment, View.OnClickListener, NetworkManager.NetworkEventListener {
+public class CardListViewFragment extends ListFragment implements IRbfFragment, View.OnClickListener, NetworkManager.NetworkEventListener, CardView.CardViewEventHandler {
 
     ArrayList<CardItem> mCardData;
     private INavigationEvents mNavigationEventHandler;
@@ -45,7 +48,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
             mCardData = savedInstanceState.getParcelableArrayList("CardData");
         }
 
-        CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.view_card, mCardData);
+        CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.view_card, mCardData, this);
         setListAdapter(cardListAdapter);
     }
 
@@ -112,6 +115,16 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
                 } else {
                     //error
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void onCardNetworkError(int errorCode, String errorMessage) {
+        switch (errorCode) {
+            case ErrorCodes.NOT_LOGGED_IN:
+                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+                mNavigationEventHandler.logout();
                 break;
         }
     }
