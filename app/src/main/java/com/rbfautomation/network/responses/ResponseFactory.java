@@ -5,6 +5,7 @@ package com.rbfautomation.network.responses;
  */
 
 import com.rbfautomation.network.requests.EndSessionRequest;
+import com.rbfautomation.network.requests.GetActivityLogRequest;
 import com.rbfautomation.network.requests.GetManifestRequest;
 import com.rbfautomation.network.requests.GetTokenRequest;
 import com.rbfautomation.network.requests.GetUserInformationRequest;
@@ -35,6 +36,9 @@ public class ResponseFactory {
 
             case SetSwitchRequest.TYPE:
                 return new SetSwitchResponse(request, responseText);
+
+            case GetActivityLogRequest.TYPE:
+                return new GetActivtyListResponse(request, responseText);
         }
 
         return null;
