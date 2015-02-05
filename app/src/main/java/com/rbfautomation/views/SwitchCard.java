@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.rbfautomation.R;
-import com.rbfautomation.data.SwitchCardItem;
+import com.rbfautomation.data.SwitchCardData;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.SetSwitchRequest;
 import com.rbfautomation.network.responses.ErrorCodes;
@@ -25,11 +25,11 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 	private View mBody;
     private Button mOnButton, mOffButton;
 
-    private SwitchCardItem mCardItem;
+    private SwitchCardData mCardItem;
 
     private NetworkManager mNetworkManager;
 
-	public SwitchCard(Context context, SwitchCardItem cardItem, CardViewEventHandler eventHandler) {
+	public SwitchCard(Context context, SwitchCardData cardItem, CardViewEventHandler eventHandler) {
 		super(context, cardItem, eventHandler);
 	}
 	
@@ -46,7 +46,7 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 		super.setupView(context);
 		mContext = context;
 
-        mCardItem = (SwitchCardItem) getCardItem();
+        mCardItem = (SwitchCardData) getCardItem();
 		
 		mBody = inflateBody(R.layout.switch_card_body);
 

@@ -35,7 +35,7 @@ public class ExpanderView extends LinearLayout implements OnClickListener {
 	
 	public void setupView(Context context) {
 		mInflater = LayoutInflater.from(context);
-		mRootView = (LinearLayout) mInflater.inflate(R.layout.view_expander, this);
+		mRootView = (LinearLayout) mInflater.inflate(R.layout.expander_view, this);
 		
 		mExpandButton = (FrameLayout) mRootView.findViewById(R.id.expand_button);
 		mExpandButton.setOnClickListener(this);

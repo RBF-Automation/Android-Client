@@ -1,6 +1,6 @@
 package com.rbfautomation;
 
-import com.rbfautomation.data.CardItem;
+import com.rbfautomation.data.CardData;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 public interface INavigationEvents {
     void logout();
-    void goToCardListView(ArrayList<CardItem> cards);
+    void goToCardListView(ArrayList<CardData> cards);
     void goToSplash();
 }

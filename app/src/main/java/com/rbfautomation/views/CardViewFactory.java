@@ -2,18 +2,22 @@ package com.rbfautomation.views;
 
 import android.content.Context;
 
-import com.rbfautomation.data.CardItem;
-import com.rbfautomation.data.SwitchCardItem;
+import com.rbfautomation.data.ActivityLogPreviewCardData;
+import com.rbfautomation.data.CardData;
+import com.rbfautomation.data.SwitchCardData;
 
 public class CardViewFactory {
 
 	
-	public static CardView getView(CardItem cardItem, Context context, CardView.CardViewEventHandler cardEventHandler) {
+	public static CardView getView(CardData cardData, Context context, CardView.CardViewEventHandler cardEventHandler) {
 
-		switch (cardItem.getType()) {
-			case SwitchCardItem.TYPE:
-				return populateSwitchCard((SwitchCardItem)cardItem, context, cardEventHandler);
-	
+		switch (cardData.getType()) {
+			case SwitchCardData.TYPE:
+                return new SwitchCard(context, (SwitchCardData) cardData, cardEventHandler);
+
+            case ActivityLogPreviewCardData.TYPE:
+                return new ActivityLogPreviewCard(context, (ActivityLogPreviewCardData) cardData, cardEventHandler);
+
 			default:
 				break;
 		}
@@ -21,10 +25,5 @@ public class CardViewFactory {
 		return null;
 	}
 
-	public static CardView populateSwitchCard(SwitchCardItem cardItem, Context context, CardView.CardViewEventHandler cardEventHandler) {
-        SwitchCard card = new SwitchCard(context, cardItem, cardEventHandler);
-
-		return card;
-	}
 
 }

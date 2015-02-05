@@ -2,10 +2,11 @@ package com.rbfautomation;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.rbfautomation.data.CardItem;
+import com.rbfautomation.data.CardData;
 import com.rbfautomation.fragments.CardListViewFragment;
 import com.rbfautomation.fragments.IRbfFragment;
 import com.rbfautomation.fragments.LoginFragment;
@@ -47,6 +48,10 @@ public class Main extends ActionBarActivity implements INavigationEvents {
 
     }
 
+    public static int getFragmnetContainer() {
+        return android.R.id.content;
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -66,16 +71,18 @@ public class Main extends ActionBarActivity implements INavigationEvents {
         LoginFragment loginFragment = new LoginFragment();
         loginFragment.setmNavigationEventHandler(this);
         mContent = loginFragment;
-        mFragmentManager.beginTransaction().replace(android.R.id.content, loginFragment).commit();
+        mFragmentManager.beginTransaction().replace(getFragmnetContainer(), loginFragment).commit();
     }
 
     @Override
-    public void goToCardListView(ArrayList<CardItem> cards) {
+    public void goToCardListView(ArrayList<CardData> cards) {
         CardListViewFragment fragment = new CardListViewFragment();
         fragment.setmNavigationEventHandler(this);
         fragment.setCardData(cards);
         mContent = fragment;
-        getFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(0, android.R.animator.fade_out);
+        ft.replace(getFragmnetContainer(), fragment).commit();
 
     }
 
@@ -84,6 +91,7 @@ public class Main extends ActionBarActivity implements INavigationEvents {
         SplashFragment fragment = new SplashFragment();
         fragment.setmNavigationEventHandler(this);
         mContent = fragment;
-        mFragmentManager.beginTransaction().replace(android.R.id.content, fragment).commit();
+        mFragmentManager.beginTransaction().replace(getFragmnetContainer(), fragment).commit();
     }
+
 }

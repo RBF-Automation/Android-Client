@@ -3,17 +3,17 @@ package com.rbfautomation.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public abstract class CardItem implements Parcelable {
+public abstract class CardData implements Parcelable {
 
     private String mName;
     private int mRemoteId;
 
-    public CardItem(int remoteId, String name) {
+    public CardData(int remoteId, String name) {
         mRemoteId = remoteId;
         mName = name;
     }
 
-    public CardItem(Parcel parcel) {
+    public CardData(Parcel parcel) {
         mName = parcel.readString();
         mRemoteId = parcel.readInt();
     }
@@ -23,7 +23,7 @@ public abstract class CardItem implements Parcelable {
     public int getRemoteId() {
         return mRemoteId;
     }
-    
+
     public String getName() {
         return mName;
     }

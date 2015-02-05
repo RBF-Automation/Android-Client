@@ -10,6 +10,7 @@
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
                                        android:id="@+id/toolbar"
                                        android:layout_width="match_parent"
+                                       android:elevation="5dp"
                                        android:background="@color/primaryAppColor"
                                        android:layout_height="?android:actionBarSize" >
     </android.support.v7.widget.Toolbar>
@@ -35,6 +36,7 @@
             android:layout_width="240dp"
             android:id="@+id/left_drawer"
             android:layout_gravity="start"
+            android:elevation="20dp"
             android:layout_height="match_parent"
             android:background="@color/menuBackground"
             android:orientation="vertical"

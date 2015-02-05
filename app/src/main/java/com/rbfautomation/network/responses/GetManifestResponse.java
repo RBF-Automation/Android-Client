@@ -1,7 +1,8 @@
 package com.rbfautomation.network.responses;
 
-import com.rbfautomation.data.CardItem;
-import com.rbfautomation.data.SwitchCardItem;
+import com.rbfautomation.data.ActivityLogPreviewCardData;
+import com.rbfautomation.data.CardData;
+import com.rbfautomation.data.SwitchCardData;
 import com.rbfautomation.network.requests.Request;
 
 import org.json.JSONArray;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  */
 public class GetManifestResponse extends Response {
 
-    private ArrayList<CardItem> mCards;
+    private ArrayList<CardData> mCards;
 
     public GetManifestResponse(Request request, String responseText) {
         super(request, responseText);
@@ -34,12 +35,19 @@ public class GetManifestResponse extends Response {
                 Integer type = (Integer) obj.get("type");
 
                 switch (type) {
-                    case SwitchCardItem.TYPE:
-                        mCards.add(new SwitchCardItem(
+                    case SwitchCardData.TYPE:
+                        mCards.add(new SwitchCardData(
                                 (int) obj.get("id"),
                                 (String) obj.get("name"),
                                 (String) obj.get("btn_on"),
                                 (String) obj.get("btn_off")
+                        ));
+                        break;
+
+                    case ActivityLogPreviewCardData.TYPE:
+                        mCards.add(new ActivityLogPreviewCardData(
+                                (int) obj.get("id"),
+                                (String) obj.get("name")
                         ));
                         break;
                 }
@@ -50,7 +58,7 @@ public class GetManifestResponse extends Response {
         }
     }
 
-    public ArrayList<CardItem> getCards() {
+    public ArrayList<CardData> getCards() {
         return mCards;
     }
 }

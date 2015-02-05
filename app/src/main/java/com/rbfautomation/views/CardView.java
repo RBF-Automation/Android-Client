@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rbfautomation.R;
-import com.rbfautomation.data.CardItem;
+import com.rbfautomation.data.CardData;
 
 
 public abstract class CardView extends LinearLayout implements OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -28,12 +28,12 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	private Context mContext;
 	private LayoutInflater mInflater;
     private TextView mHeaderText;
-    private CardItem mCardItem;
+    private CardData mCardData;
     private CardViewEventHandler mEventHandler;
 
-	public CardView(Context context, CardItem cardItem, CardViewEventHandler eventHandler) {
+	public CardView(Context context, CardData cardData, CardViewEventHandler eventHandler) {
 		super(context);
-        mCardItem = cardItem;
+        mCardData = cardData;
         mEventHandler = eventHandler;
 		setupView(context);
 	}
@@ -51,8 +51,8 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	public void setupView(Context context) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
-		mRootView = (LinearLayout) mInflater.inflate(R.layout.view_card, this);
-		
+		mRootView = (LinearLayout) mInflater.inflate(R.layout.card_view, this);
+
         mHeaderText = (TextView) mRootView.findViewById(R.id.card_header);
 		mContentBody = (FrameLayout) mRootView.findViewById(R.id.content_body);
 
@@ -97,8 +97,8 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 		return mInflater.inflate(layout, mContentBody);
 	}
 	
-	public CardItem getCardItem() {
-        return mCardItem;
+	public CardData getCardItem() {
+        return mCardData;
     }
 
     public CardViewEventHandler getEventHandler() {

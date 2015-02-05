@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.rbfautomation.INavigationEvents;
 import com.rbfautomation.R;
-import com.rbfautomation.data.CardItem;
+import com.rbfautomation.data.CardData;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetUserInformationRequest;
 import com.rbfautomation.network.responses.ErrorCodes;
@@ -30,13 +30,13 @@ import java.util.ArrayList;
 
 public class CardListViewFragment extends ListFragment implements IRbfFragment, View.OnClickListener, NetworkManager.NetworkEventListener, CardView.CardViewEventHandler {
 
-    ArrayList<CardItem> mCardData;
+    ArrayList<CardData> mCardData;
     private INavigationEvents mNavigationEventHandler;
     private NetworkManager mNetworkManager;
     private TextView mUsernameText;
     private Button mLogoutButton;
 
-    public void setCardData(ArrayList<CardItem> cardData) {
+    public void setCardData(ArrayList<CardData> cardData) {
         mCardData = cardData;
     }
 
@@ -48,7 +48,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
             mCardData = savedInstanceState.getParcelableArrayList("CardData");
         }
 
-        CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.view_card, mCardData, this);
+        CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.card_view, mCardData, this);
         setListAdapter(cardListAdapter);
     }
 
@@ -63,14 +63,12 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.card_list_view, null);
+        View v = inflater.inflate(R.layout.card_list_fragment, null);
 
         ActionBarActivity activity = (ActionBarActivity) getActivity();
 
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
         activity.setSupportActionBar(toolbar);
-
-        activity.getSupportActionBar().setElevation(10);
 
         DrawerLayout mDrawerLayout = (DrawerLayout) v.findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle;

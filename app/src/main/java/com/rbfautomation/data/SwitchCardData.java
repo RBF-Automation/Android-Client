@@ -4,19 +4,19 @@ package com.rbfautomation.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SwitchCardItem extends CardItem {
+public class SwitchCardData extends CardData {
     
     public static final int TYPE = 0;
 
     private String mOnButtonText, mOffButtonText;
     
-    public SwitchCardItem(int remoteId, String name, String onButtonText, String offButtonText) {
+    public SwitchCardData(int remoteId, String name, String onButtonText, String offButtonText) {
         super(remoteId, name);
         mOnButtonText = onButtonText;
         mOffButtonText = offButtonText;
     }
 
-    public SwitchCardItem(Parcel parcel) {
+    public SwitchCardData(Parcel parcel) {
         super(parcel);
         mOnButtonText = parcel.readString();
         mOffButtonText = parcel.readString();
@@ -47,13 +47,13 @@ public class SwitchCardItem extends CardItem {
         return TYPE;
     }
 
-    public static final Parcelable.Creator<SwitchCardItem> CREATOR = new Parcelable.Creator<SwitchCardItem>() {
-        public SwitchCardItem createFromParcel(Parcel in) {
-            return new SwitchCardItem(in);
+    public static final Parcelable.Creator<SwitchCardData> CREATOR = new Parcelable.Creator<SwitchCardData>() {
+        public SwitchCardData createFromParcel(Parcel in) {
+            return new SwitchCardData(in);
         }
 
-        public SwitchCardItem[] newArray(int size) {
-            return new SwitchCardItem[size];
+        public SwitchCardData[] newArray(int size) {
+            return new SwitchCardData[size];
         }
     };
     
