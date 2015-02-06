@@ -106,14 +106,11 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     private void handleResponseError(Response response) {
 
         switch (response.getErrorCode()) {
-            case ErrorCodes.NOT_LOGGED_IN:
-                getEventHandler().onCardNetworkError(ErrorCodes.NOT_LOGGED_IN, response.getErrorMessage());
-                break;
             case ErrorCodes.JSON_PARSE_ERROR:
                 Log.e("JSON", response.getErrorMessage());
                 break;
             default:
-                Log.e("ERROR_OTHER", response.getErrorMessage());
+                getEventHandler().onCardNetworkError(response.getErrorCode(), response.getErrorMessage());
                 break;
         }
     }

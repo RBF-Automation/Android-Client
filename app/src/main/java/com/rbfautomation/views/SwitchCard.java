@@ -102,11 +102,11 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
     private void handleResponseError(Response response) {
 
         switch (response.getErrorCode()) {
-            case ErrorCodes.NOT_LOGGED_IN:
-                getEventHandler().onCardNetworkError(ErrorCodes.NOT_LOGGED_IN, response.getErrorMessage());
-                break;
             case ErrorCodes.JSON_PARSE_ERROR:
                 Log.e("JSON", response.getErrorMessage());
+                break;
+            default:
+                getEventHandler().onCardNetworkError(response.getErrorCode(), response.getErrorMessage());
                 break;
         }
     }

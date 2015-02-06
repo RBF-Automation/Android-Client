@@ -5,6 +5,7 @@ package com.rbfautomation.network.responses;
  */
 public class ErrorCodes {
 
+    public static final int NO_RESPONSE_FROM_SERVER = 9999;
     public static final int JSON_PARSE_ERROR = 0;
     public static final int NOT_LOGGED_IN = 1;
     public static final int LOGIN_FAILED = 2;

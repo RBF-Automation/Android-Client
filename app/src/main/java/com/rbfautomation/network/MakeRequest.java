@@ -38,7 +38,7 @@ public class MakeRequest extends AsyncTask<String, Void, String> {
             HttpResponse result = client.execute(httpPost);
             return EntityUtils.toString(result.getEntity());
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }

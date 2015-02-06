@@ -106,14 +106,18 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
 
     @Override
     public void onCompleteRequest(Response response) {
-        switch (response.getType()) {
-            case GetUserInformationRequest.TYPE:
-                if (!response.hasError()) {
+        if (!response.hasError()) {
+            switch (response.getType()) {
+                case GetUserInformationRequest.TYPE:
                     mUsernameText.setText(((GetUserInformationResponse) response).getUsername());
-                } else {
-                    //error
-                }
-                break;
+                    break;
+            }
+        } else {
+            switch (response.getErrorCode()) {
+                case ErrorCodes.NO_RESPONSE_FROM_SERVER:
+                    Toast.makeText(getActivity(), response.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
@@ -123,6 +127,10 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
             case ErrorCodes.NOT_LOGGED_IN:
                 Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                 mNavigationEventHandler.logout();
+                break;
+
+            case ErrorCodes.NO_RESPONSE_FROM_SERVER:
+                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                 break;
         }
     }

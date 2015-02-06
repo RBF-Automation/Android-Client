@@ -10,6 +10,7 @@ public abstract class Response {
     public static final String RESULT = "result";
     public static final String ERROR_CODE = "errorCode";
     public static final String MESSAGE = "message";
+    public static final String NO_ROUTE_TO_HOST_ERROR = "No Route to host. Do you have an internet connection?";
 
 
     private final Request mRequest;
@@ -21,7 +22,12 @@ public abstract class Response {
         mRequest = request;
         mIsError = false;
         mErrorCode = -1;
-        decodeResponseText(responseText);
+
+        if (responseText != null) {
+            decodeResponseText(responseText);
+        } else {
+            setError(ErrorCodes.NO_RESPONSE_FROM_SERVER, NO_ROUTE_TO_HOST_ERROR);
+        }
     }
 
     protected abstract void decodeResponseText(String responseText);
