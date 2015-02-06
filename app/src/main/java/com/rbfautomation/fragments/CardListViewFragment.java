@@ -44,8 +44,8 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
             mCardData = savedInstanceState.getParcelableArrayList(CARD_DATA_INSTANCE_TAG);

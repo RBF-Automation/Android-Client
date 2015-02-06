@@ -9,6 +9,11 @@
     <string name="login_error">Login Failed</string>
     <string name="retry_connection">Retry Connection</string>
 
+    <string name="move_up">Move Up</string>
+    <string name="move_down">Move Down</string>
+
+    <string name="refresh">Refresh</string>
+
     <string name="show_message">- Show Original Message -</string>
     <string name="hide_message">- Hide Original Message -</string>
 

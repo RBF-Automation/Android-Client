@@ -38,6 +38,7 @@ public class Main extends ActionBarActivity implements IGlobalEvents {
 
         if (savedInstanceState != null) {
             mContent = mFragmentManager.getFragment(savedInstanceState, FRAGMENT_ID);
+            mFragmentManager.executePendingTransactions();
             if (mContent instanceof IRbfFragment) {
                 ((IRbfFragment)mContent).setGlobalEventHandler(this);
             }
@@ -52,6 +53,11 @@ public class Main extends ActionBarActivity implements IGlobalEvents {
             }
         }
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 
     public static int getFragmnetContainer() {
@@ -101,7 +107,7 @@ public class Main extends ActionBarActivity implements IGlobalEvents {
         mContent = fragment;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(0, android.R.animator.fade_out);
-        ft.replace(getFragmnetContainer(), fragment).commit();
+        ft.replace(getFragmnetContainer(), fragment).commitAllowingStateLoss();
 
     }
 

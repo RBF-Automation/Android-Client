@@ -2,7 +2,6 @@ package com.rbfautomation.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import com.rbfautomation.data.ActivityLogEvent;
 import com.rbfautomation.data.ActivityLogPreviewCardData;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetActivityLogRequest;
-import com.rbfautomation.network.responses.ErrorCodes;
 import com.rbfautomation.network.responses.GetActivtyListResponse;
 import com.rbfautomation.network.responses.Response;
 
@@ -23,6 +21,8 @@ import java.util.ArrayList;
  * Created by brian on 2/4/15.
  */
 public class ActivityLogPreviewCard extends CardView implements NetworkManager.NetworkEventListener {
+
+    private static final int NUM_RESULTS = 5;
 
     private Context mContext;
     private View mBody;
@@ -58,16 +58,30 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
         setHeader(mCardItem.getName());
 
         mNetworkManager = new NetworkManager(this, context, getEventHandler().getSessionContext());
-        mNetworkManager.request(new GetActivityLogRequest(5));
+        refresh();
+
+        useMenu(true);
+    }
+
+    public void refresh() {
+        mPreviewDataContainer.removeAllViews();
+        mPreviewDataContainer.setVisibility(GONE);
+        mProgressBar.setVisibility(VISIBLE);
+        mNetworkManager.request(new GetActivityLogRequest(NUM_RESULTS));
     }
 
     @Override
     public int getContextMenuResource() {
-        return CardView.NO_MENU;
+        return R.menu.activity_log_preview_menu;
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem arg0) {
+        switch (arg0.getItemId()) {
+            case R.id.refresh:
+                refresh();
+                return true;
+        }
         return false;
     }
 
@@ -96,7 +110,8 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     }
 
     private void showLogData(ArrayList<ActivityLogEvent> events) {
-        mProgressBar.setVisibility(View.GONE);
+        mPreviewDataContainer.setVisibility(VISIBLE);
+        mProgressBar.setVisibility(GONE);
         for (int i = 0; i < events.size(); i++) {
             mPreviewDataContainer.addView(new ActivityLogPreviewItemView(mContext, events.get(i)));
         }
@@ -104,14 +119,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
 
 
     private void handleResponseError(Response response) {
-
-        switch (response.getErrorCode()) {
-            case ErrorCodes.JSON_PARSE_ERROR:
-                Log.e("JSON", response.getErrorMessage());
-                break;
-            default:
-                getEventHandler().onCardNetworkError(response.getErrorCode(), response.getErrorMessage());
-                break;
-        }
+        mProgressBar.setVisibility(GONE);
+        getEventHandler().onCardNetworkError(response.getErrorCode(), response.getErrorMessage());
     }
 }

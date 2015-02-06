@@ -18,12 +18,12 @@ import com.rbfautomation.network.ISessionContext;
 
 public abstract class CardView extends LinearLayout implements OnClickListener, PopupMenu.OnMenuItemClickListener {
 
-    public static final int NO_MENU = 0x0;
-
     public interface CardViewEventHandler {
         public void onCardNetworkError(int errorCode, String errorMessage);
         public ISessionContext getSessionContext();
     }
+
+    public static final int NO_RESOURCE = 0x0;
 
 	private LinearLayout mRootView;
 	private FrameLayout mContentBody;
@@ -57,12 +57,7 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 
         mHeaderText = (TextView) mRootView.findViewById(R.id.card_header);
 		mContentBody = (FrameLayout) mRootView.findViewById(R.id.content_body);
-
-        if (getContextMenuResource() == NO_MENU) {
-            mRootView.findViewById(R.id.context_menu).setVisibility(View.INVISIBLE);
-        } else {
-            mRootView.findViewById(R.id.context_menu).setOnClickListener(this);
-        }
+        mRootView.findViewById(R.id.context_menu).setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -84,17 +79,29 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	
 	public void popContextMenu(View v) {
 		PopupMenu popup = new PopupMenu(mContext, v);
-        popup.getMenuInflater().inflate(getContextMenuResource(), popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.default_card_menu, popup.getMenu());
+        if (getContextMenuResource() != NO_RESOURCE) {
+            popup.getMenuInflater().inflate(getContextMenuResource(), popup.getMenu());
+        }
         popup.show();
         popup.setOnMenuItemClickListener(this);
 	}
+
+    public void useMenu(boolean use) {
+        if (use) {
+            mRootView.findViewById(R.id.context_menu).setVisibility(View.VISIBLE);
+            mRootView.findViewById(R.id.context_menu).setOnClickListener(this);
+        } else {
+            mRootView.findViewById(R.id.context_menu).setVisibility(View.INVISIBLE);
+
+        }
+    }
 	
 	public abstract int getContextMenuResource();
 	
 	@Override
 	public abstract boolean onMenuItemClick(MenuItem arg0);
-	
-	
+
 	public View inflateBody(int layout) {
 		return mInflater.inflate(layout, mContentBody);
 	}
@@ -106,5 +113,6 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
     public CardViewEventHandler getEventHandler() {
         return mEventHandler;
     }
-	
+
+
 }

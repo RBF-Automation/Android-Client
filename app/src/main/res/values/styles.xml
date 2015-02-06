@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<style name="AppTheme" parent="AppTheme.Base"/>
+    <style name="AppTheme" parent="AppTheme.Base"/>
 
-<style name="AppTheme.Base" parent="Theme.AppCompat">
-    <item name="colorPrimary">@color/primaryBackground</item>
-    <item name="colorPrimaryDark">@color/primaryAccent</item>
-    <item name="android:windowNoTitle">true</item>
-    <item name="windowActionBar">false</item>
-    <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-</style>
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/primaryBackground</item>
+        <item name="colorPrimaryDark">@color/primaryAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="popupMenuStyle">@style/lightPopup</item>
+        <item name="textAppearanceLargePopupMenu">@style/menuTextStyle</item>
+        <item name="textAppearanceSmallPopupMenu">@style/menuTextStyle</item>
+
+
+    </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
+
+    <style name="lightPopup" parent="@android:style/Widget.Holo.Light.PopupMenu">
+    </style>
+
+    <style name="menuTextStyle">
+        <item name="android:textColor">@color/buttonTextColor</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>
 

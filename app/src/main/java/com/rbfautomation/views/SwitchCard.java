@@ -61,11 +61,13 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
         mOffButton.setText(mCardItem.getOffButtonText());
 
         mNetworkManager = new NetworkManager(this, context, getEventHandler().getSessionContext());
+
+        useMenu(true);
 	}
 
 	@Override
 	public int getContextMenuResource() {
-		return CardView.NO_MENU;
+		return NO_RESOURCE;
 	}
 
 	@Override

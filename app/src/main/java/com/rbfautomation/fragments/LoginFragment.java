@@ -29,17 +29,6 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
     private IGlobalEvents mGlobalEventHandler;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.login_fragment, null);
         mUsername = (TextView) v.findViewById(R.id.username);

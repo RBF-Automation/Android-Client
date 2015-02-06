@@ -1,7 +1,6 @@
 package com.rbfautomation.fragments;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,14 +30,9 @@ public class SplashFragment extends Fragment implements IRbfFragment, NetworkMan
     private Request mLastRequest;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mNetworkManager = new NetworkManager(this, activity.getBaseContext(), mGlobalEventHandler.getSessionContext());
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mNetworkManager = new NetworkManager(this, getActivity(), mGlobalEventHandler.getSessionContext());
         mNetworkManager.startSession();
     }
 
