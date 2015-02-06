@@ -11,35 +11,41 @@ import com.rbfautomation.fragments.CardListViewFragment;
 import com.rbfautomation.fragments.IRbfFragment;
 import com.rbfautomation.fragments.LoginFragment;
 import com.rbfautomation.fragments.SplashFragment;
+import com.rbfautomation.network.ISessionContext;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.EndSessionRequest;
+import com.rbfautomation.network.requests.Request;
+import com.rbfautomation.network.responses.Response;
 
 import java.util.ArrayList;
 
 
-public class Main extends ActionBarActivity implements INavigationEvents {
+public class Main extends ActionBarActivity implements IGlobalEvents {
 
-    public static final String FRAGMNET_ID = "mContent";
+    public static final String FRAGMENT_ID = "mContent";
 
     private FragmentManager mFragmentManager;
     private Fragment mContent;
+    private Settings mSettings;
+    private RbfSessionContext mSessionContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mFragmentManager = getFragmentManager();
+        mSettings = new Settings(this);
 
         if (savedInstanceState != null) {
-            mContent = mFragmentManager.getFragment(savedInstanceState, FRAGMNET_ID);
+            mContent = mFragmentManager.getFragment(savedInstanceState, FRAGMENT_ID);
             if (mContent instanceof IRbfFragment) {
-                ((IRbfFragment)mContent).setmNavigationEventHandler(this);
+                ((IRbfFragment)mContent).setGlobalEventHandler(this);
             }
 
         } else {
-            Settings settings = new Settings(this);
 
-            if (settings.getToken() == null) {
+
+            if (mSettings.getToken() == null) {
                 goToLogin();
             } else {
                 goToSplash();
@@ -55,21 +61,34 @@ public class Main extends ActionBarActivity implements INavigationEvents {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mFragmentManager.putFragment(outState, FRAGMNET_ID, mContent);
+        mFragmentManager.putFragment(outState, FRAGMENT_ID, mContent);
     }
 
     @Override
     public void logout() {
-        Settings settings = new Settings(this);
-        settings.setToken(null);
-        NetworkManager networkManager = new NetworkManager(null, this);
+        mSettings.setToken(null);
+        //Special case for logout. We dont want this request to be recoverable, or attempt to start a session
+        NetworkManager networkManager = new NetworkManager(null, this, new ISessionContext() {
+            @Override
+            public Request getSessionStartRequest() {
+                return null;
+            }
+            @Override
+            public boolean requestRecoverable(Response response) {
+                return false;
+            }
+            @Override
+            public boolean validateSessionStart(Response response) {
+                return false;
+            }
+        });
         networkManager.request(new EndSessionRequest());
         goToLogin();
     }
 
     public void goToLogin() {
         LoginFragment loginFragment = new LoginFragment();
-        loginFragment.setmNavigationEventHandler(this);
+        loginFragment.setGlobalEventHandler(this);
         mContent = loginFragment;
         mFragmentManager.beginTransaction().replace(getFragmnetContainer(), loginFragment).commit();
     }
@@ -77,7 +96,7 @@ public class Main extends ActionBarActivity implements INavigationEvents {
     @Override
     public void goToCardListView(ArrayList<CardData> cards) {
         CardListViewFragment fragment = new CardListViewFragment();
-        fragment.setmNavigationEventHandler(this);
+        fragment.setGlobalEventHandler(this);
         fragment.setCardData(cards);
         mContent = fragment;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -89,9 +108,14 @@ public class Main extends ActionBarActivity implements INavigationEvents {
     @Override
     public void goToSplash() {
         SplashFragment fragment = new SplashFragment();
-        fragment.setmNavigationEventHandler(this);
+        fragment.setGlobalEventHandler(this);
         mContent = fragment;
         mFragmentManager.beginTransaction().replace(getFragmnetContainer(), fragment).commit();
+    }
+
+    @Override
+    public ISessionContext getSessionContext() {
+        return new RbfSessionContext(mSettings.getToken());
     }
 
 }

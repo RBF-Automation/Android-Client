@@ -60,7 +60,7 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
         mOnButton.setText(mCardItem.getOnButtonText());
         mOffButton.setText(mCardItem.getOffButtonText());
 
-        mNetworkManager = new NetworkManager(this, context);
+        mNetworkManager = new NetworkManager(this, context, getEventHandler().getSessionContext());
 	}
 
 	@Override

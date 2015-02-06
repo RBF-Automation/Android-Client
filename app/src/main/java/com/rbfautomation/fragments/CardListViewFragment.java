@@ -14,9 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rbfautomation.INavigationEvents;
+import com.rbfautomation.IGlobalEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.data.CardData;
+import com.rbfautomation.network.ISessionContext;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetUserInformationRequest;
 import com.rbfautomation.network.responses.ErrorCodes;
@@ -30,8 +31,10 @@ import java.util.ArrayList;
 
 public class CardListViewFragment extends ListFragment implements IRbfFragment, View.OnClickListener, NetworkManager.NetworkEventListener, CardView.CardViewEventHandler {
 
+    public static final String CARD_DATA_INSTANCE_TAG = "CardData";
+
     ArrayList<CardData> mCardData;
-    private INavigationEvents mNavigationEventHandler;
+    private IGlobalEvents mGlobalEventHandler;
     private NetworkManager mNetworkManager;
     private TextView mUsernameText;
     private Button mLogoutButton;
@@ -45,7 +48,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            mCardData = savedInstanceState.getParcelableArrayList("CardData");
+            mCardData = savedInstanceState.getParcelableArrayList(CARD_DATA_INSTANCE_TAG);
         }
 
         CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.card_view, mCardData, this);
@@ -57,7 +60,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
         super.onSaveInstanceState(outState);
 
         if (mCardData != null) {
-            outState.putParcelableArrayList("CardData", mCardData);
+            outState.putParcelableArrayList(CARD_DATA_INSTANCE_TAG, mCardData);
         }
     }
 
@@ -85,21 +88,22 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
         mLogoutButton = (Button) v.findViewById(R.id.logout_button);
         mLogoutButton.setOnClickListener(this);
 
-        mNetworkManager = new NetworkManager(this, getActivity());
+        mNetworkManager = new NetworkManager(this, getActivity(), mGlobalEventHandler.getSessionContext());
         mNetworkManager.request(new GetUserInformationRequest());
 
         return v;
     }
 
-    public void setmNavigationEventHandler(INavigationEvents eventHandler) {
-        mNavigationEventHandler = eventHandler;
+    @Override
+    public void setGlobalEventHandler(IGlobalEvents eventHandler) {
+        mGlobalEventHandler = eventHandler;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout_button:
-                mNavigationEventHandler.logout();
+                mGlobalEventHandler.logout();
                 break;
         }
     }
@@ -126,12 +130,17 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
         switch (errorCode) {
             case ErrorCodes.NOT_LOGGED_IN:
                 Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                mNavigationEventHandler.logout();
+                mGlobalEventHandler.logout();
                 break;
 
             case ErrorCodes.NO_RESPONSE_FROM_SERVER:
                 Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public ISessionContext getSessionContext() {
+        return mGlobalEventHandler.getSessionContext();
     }
 }

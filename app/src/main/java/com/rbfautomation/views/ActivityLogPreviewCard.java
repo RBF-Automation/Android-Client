@@ -57,7 +57,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
 
         setHeader(mCardItem.getName());
 
-        mNetworkManager = new NetworkManager(this, context);
+        mNetworkManager = new NetworkManager(this, context, getEventHandler().getSessionContext());
         mNetworkManager.request(new GetActivityLogRequest(5));
     }
 

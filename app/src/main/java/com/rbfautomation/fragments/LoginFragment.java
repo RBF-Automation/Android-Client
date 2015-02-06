@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rbfautomation.INavigationEvents;
+import com.rbfautomation.IGlobalEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.Settings;
 import com.rbfautomation.network.NetworkManager;
@@ -26,7 +26,7 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
 
     private TextView mUsername, mPassword;
     private Button mLogin;
-    private INavigationEvents mNavigationEventHandler;
+    private IGlobalEvents mGlobalEventHandler;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -51,22 +51,22 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
         return v;
     }
 
-    public void setmNavigationEventHandler(INavigationEvents eventHandler) {
-        mNavigationEventHandler = eventHandler;
+    public void setGlobalEventHandler(IGlobalEvents eventHandler) {
+        mGlobalEventHandler = eventHandler;
     }
 
     private void login() {
         InputMethodManager inputMethodManager = (InputMethodManager)  getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 
-        NetworkManager networkManager = new NetworkManager(this, getActivity());
+        NetworkManager networkManager = new NetworkManager(this, getActivity(), mGlobalEventHandler.getSessionContext());
         networkManager.request(new GetTokenRequest(mUsername.getText().toString(), mPassword.getText().toString()));
     }
 
     private void saveToken(String token) {
         Settings settings = new Settings(getActivity());
         settings.setToken(token);
-        mNavigationEventHandler.goToSplash();
+        mGlobalEventHandler.goToSplash();
     }
 
     @Override

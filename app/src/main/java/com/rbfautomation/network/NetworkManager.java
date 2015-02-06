@@ -2,20 +2,14 @@ package com.rbfautomation.network;
 
 import android.content.Context;
 
-import com.rbfautomation.network.requests.GetTokenRequest;
 import com.rbfautomation.network.requests.Request;
-import com.rbfautomation.network.requests.StartSessionRequest;
-import com.rbfautomation.network.responses.ErrorCodes;
 import com.rbfautomation.network.responses.Response;
 import com.rbfautomation.network.responses.ResponseFactory;
-import com.rbfautomation.network.responses.StartSessionResponse;
 
 /**
  * Created by brian on 1/31/15.
  */
 public class NetworkManager implements MakeRequest.OnRequsetListener {
-
-    private static String mCachedToken;
 
     public interface NetworkEventListener {
         void onCompleteRequest(Response response);
@@ -23,15 +17,16 @@ public class NetworkManager implements MakeRequest.OnRequsetListener {
 
     private NetworkEventListener mEventHandler;
     private Context mContext;
+    private final ISessionContext mSessionContext;
 
-    public NetworkManager(NetworkEventListener eventHandler, Context context) {
+    public NetworkManager(NetworkEventListener eventHandler, Context context, ISessionContext sessionContext) {
         mEventHandler = eventHandler;
         mContext = context;
+        mSessionContext = sessionContext;
     }
 
-    public void startSession(String token) {
-        mCachedToken = token;
-        request(new StartSessionRequest(token));
+    public void startSession() {
+        request(mSessionContext.getSessionStartRequest());
     }
 
     public void request(Request request) {
@@ -43,35 +38,26 @@ public class NetworkManager implements MakeRequest.OnRequsetListener {
      * Attempts to silently recover a user session if the session has expired.
      * @param originalResponse
      */
-    public void recoverRequest(final Response originalResponse) {
-        if (mCachedToken != null) {
-            MakeRequest serverRequest = new MakeRequest(new StartSessionRequest(mCachedToken), new MakeRequest.OnRequsetListener() {
-                @Override
-                public void onResponse(String responseText, Request request) {
-                    StartSessionResponse response = (StartSessionResponse) ResponseFactory.createResponse(request, responseText);
-                    if (!response.hasError() && response.sessionStarted()) {
-                        request(originalResponse.getRequest());
-                    } else {
-                        handleResponse(originalResponse);
-                    }
+    private void recoverRequest(final Response originalResponse) {
+        MakeRequest serverRequest = new MakeRequest(mSessionContext.getSessionStartRequest(), new MakeRequest.OnRequsetListener() {
+            @Override
+            public void onResponse(String responseText, Request request) {
+                if (mSessionContext.validateSessionStart(ResponseFactory.createResponse(request, responseText))) {
+                    request(originalResponse.getRequest());
+                } else {
+                    handleResponse(originalResponse);
                 }
-            }, mContext);
-            serverRequest.execute();
-        } else {
-            handleResponse(originalResponse);
-        }
+            }
+        }, mContext);
+        serverRequest.execute();
     }
 
 
     @Override
     public void onResponse(String responseText, Request request) {
         Response response = ResponseFactory.createResponse(request, responseText);
-
-        if (response.hasError() && response.getErrorCode() == ErrorCodes.NOT_LOGGED_IN) {
-            if (request.getType() != StartSessionRequest.TYPE &&
-                request.getType() != GetTokenRequest.TYPE) {
-                recoverRequest(response);
-            }
+        if (mSessionContext.requestRecoverable(response)) {
+            recoverRequest(response);
         } else {
             handleResponse(response);
         }

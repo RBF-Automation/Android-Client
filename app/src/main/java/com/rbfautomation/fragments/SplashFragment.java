@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.rbfautomation.INavigationEvents;
+import com.rbfautomation.IGlobalEvents;
 import com.rbfautomation.R;
-import com.rbfautomation.Settings;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetManifestRequest;
 import com.rbfautomation.network.requests.Request;
@@ -27,7 +26,7 @@ import com.rbfautomation.network.responses.StartSessionResponse;
 public class SplashFragment extends Fragment implements IRbfFragment, NetworkManager.NetworkEventListener, View.OnClickListener {
 
     NetworkManager mNetworkManager;
-    private INavigationEvents mNavigationEventHandler;
+    private IGlobalEvents mGlobalEventHandler;
     private Button mRetryButton;
     private Request mLastRequest;
 
@@ -39,10 +38,8 @@ public class SplashFragment extends Fragment implements IRbfFragment, NetworkMan
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Settings settings = new Settings(activity);
-
-        mNetworkManager = new NetworkManager(this, activity.getBaseContext());
-        mNetworkManager.startSession(settings.getToken());
+        mNetworkManager = new NetworkManager(this, activity.getBaseContext(), mGlobalEventHandler.getSessionContext());
+        mNetworkManager.startSession();
     }
 
     @Override
@@ -53,9 +50,9 @@ public class SplashFragment extends Fragment implements IRbfFragment, NetworkMan
         return v;
     }
 
-
-    public void setmNavigationEventHandler(INavigationEvents eventHandler) {
-        mNavigationEventHandler = eventHandler;
+    @Override
+    public void setGlobalEventHandler(IGlobalEvents eventHandler) {
+        mGlobalEventHandler = eventHandler;
     }
 
     @Override
@@ -67,14 +64,14 @@ public class SplashFragment extends Fragment implements IRbfFragment, NetworkMan
                     if (((StartSessionResponse) response).sessionStarted()) {
                         mNetworkManager.request(new GetManifestRequest());
                     } else {
-                        mNavigationEventHandler.logout();
+                        mGlobalEventHandler.logout();
                     }
                     break;
 
                 case GetManifestRequest.TYPE:
 
                     if (!response.hasError()) {
-                        mNavigationEventHandler.goToCardListView(((GetManifestResponse) response).getCards());
+                        mGlobalEventHandler.goToCardListView(((GetManifestResponse) response).getCards());
                     } else {
                         Log.e("ERROR", response.getErrorMessage());
                         Toast.makeText(getActivity(), getResources().getText(R.string.manifest_error), Toast.LENGTH_SHORT).show();

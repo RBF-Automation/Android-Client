@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.rbfautomation.R;
 import com.rbfautomation.data.CardData;
+import com.rbfautomation.network.ISessionContext;
 
 
 public abstract class CardView extends LinearLayout implements OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -20,7 +21,8 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
     public static final int NO_MENU = 0x0;
 
     public interface CardViewEventHandler {
-        void onCardNetworkError(int errorCode, String errorMessage);
+        public void onCardNetworkError(int errorCode, String errorMessage);
+        public ISessionContext getSessionContext();
     }
 
 	private LinearLayout mRootView;
