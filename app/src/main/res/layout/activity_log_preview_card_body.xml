@@ -13,6 +13,19 @@
         android:id="@+id/log_loading"
         android:layout_gravity="center_horizontal"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:visibility="gone"
+        android:textAllCaps="false"
+        android:textColor="@color/buttonTextColor"
+        android:background="@drawable/button"
+        android:text="@string/retry_connection"
+        android:id="@+id/retry_button_activity_preview"
+        android:layout_gravity="center_horizontal"/>
+
+
     <LinearLayout
                   android:orientation="vertical"
                   android:id="@+id/log_content"

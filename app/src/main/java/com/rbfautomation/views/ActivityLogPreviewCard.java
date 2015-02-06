@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -28,6 +29,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     private View mBody;
     private ProgressBar mProgressBar;
     private LinearLayout mPreviewDataContainer;
+    private Button mRetryButton;
 
     private ActivityLogPreviewCardData mCardItem;
 
@@ -54,6 +56,8 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
         mBody = inflateBody(R.layout.activity_log_preview_card_body);
         mProgressBar = (ProgressBar) mBody.findViewById(R.id.log_loading);
         mPreviewDataContainer = (LinearLayout) mBody.findViewById(R.id.log_content);
+        mRetryButton = (Button) mBody.findViewById(R.id.retry_button_activity_preview);
+        mRetryButton.setOnClickListener(this);
 
         setHeader(mCardItem.getName());
 
@@ -64,6 +68,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     }
 
     public void refresh() {
+        mRetryButton.setVisibility(GONE);
         mPreviewDataContainer.removeAllViews();
         mPreviewDataContainer.setVisibility(GONE);
         mProgressBar.setVisibility(VISIBLE);
@@ -90,6 +95,9 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
         super.onClick(v);
 
         switch (v.getId()) {
+            case R.id.retry_button_activity_preview:
+                refresh();
+                break;
 
             default:
                 break;
@@ -119,6 +127,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
 
 
     private void handleResponseError(Response response) {
+        mRetryButton.setVisibility(VISIBLE);
         mProgressBar.setVisibility(GONE);
         getEventHandler().onCardNetworkError(response.getErrorCode(), response.getErrorMessage());
     }
