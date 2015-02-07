@@ -3,7 +3,6 @@ package com.rbfautomation.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -70,12 +69,6 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 		return NO_RESOURCE;
 	}
 
-	@Override
-	public boolean onMenuItemClick(MenuItem arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);

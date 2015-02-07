@@ -81,8 +81,10 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem arg0) {
-        switch (arg0.getItemId()) {
+    public boolean onMenuItemClick(MenuItem item) {
+        super.onMenuItemClick(item);
+
+        switch (item.getItemId()) {
             case R.id.refresh:
                 refresh();
                 return true;

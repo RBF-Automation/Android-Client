@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.rbfautomation.IGlobalEvents;
 import com.rbfautomation.R;
-import com.rbfautomation.Settings;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetTokenRequest;
 import com.rbfautomation.network.responses.GetTokenResponse;
@@ -24,9 +23,14 @@ import com.rbfautomation.network.responses.Response;
  */
 public class LoginFragment  extends Fragment implements IRbfFragment, NetworkManager.NetworkEventListener, View.OnClickListener {
 
+    public interface LoginEvents {
+        public void saveToken(String token);
+    }
+
     private TextView mUsername, mPassword;
     private Button mLogin;
     private IGlobalEvents mGlobalEventHandler;
+    private LoginEvents mLoginEvents;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +48,10 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
         mGlobalEventHandler = eventHandler;
     }
 
+    public void setLoginEventHandler(LoginEvents eventHandler) {
+        mLoginEvents = eventHandler;
+    }
+
     private void login() {
         InputMethodManager inputMethodManager = (InputMethodManager)  getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
@@ -53,8 +61,7 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
     }
 
     private void saveToken(String token) {
-        Settings settings = new Settings(getActivity());
-        settings.setToken(token);
+        mLoginEvents.saveToken(token);
         mGlobalEventHandler.goToSplash();
     }
 

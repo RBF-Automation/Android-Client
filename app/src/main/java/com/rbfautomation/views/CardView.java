@@ -21,6 +21,8 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
     public interface CardViewEventHandler {
         public void onCardNetworkError(int errorCode, String errorMessage);
         public ISessionContext getSessionContext();
+        public void moveUp(CardData card);
+        public void moveDown(CardData card);
     }
 
     public static final int NO_RESOURCE = 0x0;
@@ -79,10 +81,10 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	
 	public void popContextMenu(View v) {
 		PopupMenu popup = new PopupMenu(mContext, v);
-        popup.getMenuInflater().inflate(R.menu.default_card_menu, popup.getMenu());
         if (getContextMenuResource() != NO_RESOURCE) {
             popup.getMenuInflater().inflate(getContextMenuResource(), popup.getMenu());
         }
+        popup.getMenuInflater().inflate(R.menu.default_card_menu, popup.getMenu());
         popup.show();
         popup.setOnMenuItemClickListener(this);
 	}
@@ -100,7 +102,18 @@ public abstract class CardView extends LinearLayout implements OnClickListener, 
 	public abstract int getContextMenuResource();
 	
 	@Override
-	public abstract boolean onMenuItemClick(MenuItem arg0);
+	public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.move_up:
+                mEventHandler.moveUp(mCardData);
+                return true;
+
+            case R.id.move_down:
+                mEventHandler.moveDown(mCardData);
+                return true;
+        }
+        return false;
+    }
 
 	public View inflateBody(int layout) {
 		return mInflater.inflate(layout, mContentBody);

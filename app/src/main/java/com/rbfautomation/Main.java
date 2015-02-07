@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.rbfautomation.data.CardData;
+import com.rbfautomation.data.CardDataSorter;
 import com.rbfautomation.fragments.CardListViewFragment;
 import com.rbfautomation.fragments.IRbfFragment;
 import com.rbfautomation.fragments.LoginFragment;
@@ -20,7 +21,7 @@ import com.rbfautomation.network.responses.Response;
 import java.util.ArrayList;
 
 
-public class Main extends ActionBarActivity implements IGlobalEvents {
+public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSorter.CardDataSorterEventHandler, LoginFragment.LoginEvents {
 
     public static final String FRAGMENT_ID = "mContent";
 
@@ -39,6 +40,7 @@ public class Main extends ActionBarActivity implements IGlobalEvents {
         if (savedInstanceState != null) {
             mContent = mFragmentManager.getFragment(savedInstanceState, FRAGMENT_ID);
             mFragmentManager.executePendingTransactions();
+
             if (mContent instanceof IRbfFragment) {
                 ((IRbfFragment)mContent).setGlobalEventHandler(this);
             }
@@ -95,6 +97,7 @@ public class Main extends ActionBarActivity implements IGlobalEvents {
     public void goToLogin() {
         LoginFragment loginFragment = new LoginFragment();
         loginFragment.setGlobalEventHandler(this);
+        loginFragment.setLoginEventHandler(this);
         mContent = loginFragment;
         mFragmentManager.beginTransaction().replace(getFragmnetContainer(), loginFragment).commit();
     }
@@ -123,5 +126,26 @@ public class Main extends ActionBarActivity implements IGlobalEvents {
     public ISessionContext getSessionContext() {
         return new RbfSessionContext(mSettings.getToken());
     }
+
+    @Override
+    public CardDataSorter.CardDataSorterEventHandler getCardOrderSaver() {
+        return this;
+    }
+
+    @Override
+    public void saveOrder(ArrayList<Integer> order) {
+        mSettings.setCardOrder(order);
+    }
+
+    @Override
+    public ArrayList<Integer> getCardOrder() {
+        return mSettings.getCardOrder();
+    }
+
+    @Override
+    public void saveToken(String token) {
+        mSettings.setToken(token);
+    }
+
 
 }

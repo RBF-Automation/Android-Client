@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.rbfautomation.IGlobalEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.data.CardData;
+import com.rbfautomation.data.CardDataSorter;
 import com.rbfautomation.network.ISessionContext;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetUserInformationRequest;
@@ -33,26 +34,31 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
 
     public static final String CARD_DATA_INSTANCE_TAG = "CardData";
 
-    ArrayList<CardData> mCardData;
+    private ArrayList<CardData> mCardData;
     private IGlobalEvents mGlobalEventHandler;
     private NetworkManager mNetworkManager;
     private TextView mUsernameText;
     private Button mLogoutButton;
+    private CardDataSorter mSorter;
+    private CardListAdapter mCardListAdapter;
 
     public void setCardData(ArrayList<CardData> cardData) {
         mCardData = cardData;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mSorter = new CardDataSorter(mGlobalEventHandler.getCardOrder(), mGlobalEventHandler.getCardOrderSaver());
 
         if (savedInstanceState != null) {
             mCardData = savedInstanceState.getParcelableArrayList(CARD_DATA_INSTANCE_TAG);
+        } else {
+            mCardData = mSorter.map(mCardData);
         }
 
-        CardListAdapter cardListAdapter = new CardListAdapter(getActivity(), R.layout.card_view, mCardData, this);
-        setListAdapter(cardListAdapter);
+        mCardListAdapter = new CardListAdapter(getActivity(), mCardData, this);
+        setListAdapter(mCardListAdapter);
     }
 
     @Override
@@ -142,5 +148,28 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
     @Override
     public ISessionContext getSessionContext() {
         return mGlobalEventHandler.getSessionContext();
+    }
+
+    @Override
+    public void moveUp(CardData card) {
+        int index = mCardData.indexOf(card);
+        if (index != -1 && (index - 1) >= 0) {
+            updateCardOrdering(index - 1, card);
+        }
+    }
+
+    @Override
+    public void moveDown(CardData card) {
+        int index = mCardData.indexOf(card);
+        if (index != -1 && (index + 1) <= mCardData.size()) {
+            updateCardOrdering(index + 1, card);
+        }
+    }
+
+    private void updateCardOrdering(int index, CardData card) {
+        mCardData.remove(card);
+        mCardData.add(index, card);
+        mSorter.setOrder(mCardData);
+        mCardListAdapter.setCardDataAndRefresh(mCardData);
     }
 }
