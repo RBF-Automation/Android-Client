@@ -120,8 +120,9 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     private void showLogData(ArrayList<ActivityLogEvent> events) {
         mPreviewDataContainer.setVisibility(VISIBLE);
         mProgressBar.setVisibility(GONE);
-        for (int i = 0; i < events.size(); i++) {
-            mPreviewDataContainer.addView(new ActivityLogPreviewItemView(mContext, events.get(i)));
+
+        for (ActivityLogEvent event : events) {
+            mPreviewDataContainer.addView(new ActivityLogPreviewItemView(mContext, event));
         }
     }
 
