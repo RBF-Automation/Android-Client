@@ -21,7 +21,11 @@ import com.rbfautomation.network.responses.Response;
 import java.util.ArrayList;
 
 
-public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSorter.CardDataSorterEventHandler, LoginFragment.LoginEvents {
+public class Main extends ActionBarActivity implements
+                                            IGlobalEvents,
+                                            CardDataSorter.CardDataSorterEventHandler,
+                                            LoginFragment.LoginEvents,
+                                            CardListViewFragment.CardListViewFragmentEvents {
 
     public static final String FRAGMENT_ID = "mContent";
 
@@ -29,6 +33,8 @@ public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSo
     private Fragment mContent;
     private Settings mSettings;
     private RbfSessionContext mSessionContext;
+
+    /*  ACTIVITY OVERRIDES  */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,10 @@ public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSo
                 ((IRbfFragment)mContent).setGlobalEventHandler(this);
             }
 
+            if (mContent instanceof CardListViewFragment.CardListViewFragmentEvents) {
+                ((CardListViewFragment)mContent).setCardListViewEventHandler(this);
+            }
+
         } else {
 
 
@@ -58,40 +68,15 @@ public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSo
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-    }
-
-    public static int getFragmnetContainer() {
-        return android.R.id.content;
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mFragmentManager.putFragment(outState, FRAGMENT_ID, mContent);
     }
 
-    @Override
-    public void logout() {
-        mSettings.setToken(null);
-        //Special case for logout. We dont want this request to be recoverable, or attempt to start a session
-        NetworkManager networkManager = new NetworkManager(null, this, new ISessionContext() {
-            @Override
-            public Request getSessionStartRequest() {
-                return null;
-            }
-            @Override
-            public boolean requestRecoverable(Response response) {
-                return false;
-            }
-            @Override
-            public boolean validateSessionStart(Response response) {
-                return false;
-            }
-        });
-        networkManager.request(new EndSessionRequest());
-        goToLogin();
+    /*  GENERAL METHODS  */
+
+    public static int getFragmnetContainer() {
+        return android.R.id.content;
     }
 
     public void goToLogin() {
@@ -102,10 +87,29 @@ public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSo
         mFragmentManager.beginTransaction().replace(getFragmnetContainer(), loginFragment).commit();
     }
 
+    /*  IGlobalEvents OVERRIDES  */
+
+    @Override
+    public void logout() {
+        mSettings.setToken(null);
+        //Special case for logout. We dont want this request to be recoverable, or attempt to start a session
+        NetworkManager networkManager = new NetworkManager(null, this, new ISessionContext() {
+            @Override
+            public Request getSessionStartRequest() { return null; }
+            @Override
+            public boolean requestRecoverable(Response response) { return false; }
+            @Override
+            public boolean validateSessionStart(Response response) { return false; }
+        });
+        networkManager.request(new EndSessionRequest());
+        goToLogin();
+    }
+
     @Override
     public void goToCardListView(ArrayList<CardData> cards) {
         CardListViewFragment fragment = new CardListViewFragment();
         fragment.setGlobalEventHandler(this);
+        fragment.setCardListViewEventHandler(this);
         fragment.setCardData(cards);
         mContent = fragment;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -127,14 +131,11 @@ public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSo
         return new RbfSessionContext(mSettings.getToken());
     }
 
+
+    /*  CardListViewFragmentEvents OVERRIDES  */
     @Override
     public CardDataSorter.CardDataSorterEventHandler getCardOrderSaver() {
         return this;
-    }
-
-    @Override
-    public void saveOrder(ArrayList<Integer> order) {
-        mSettings.setCardOrder(order);
     }
 
     @Override
@@ -142,10 +143,15 @@ public class Main extends ActionBarActivity implements IGlobalEvents, CardDataSo
         return mSettings.getCardOrder();
     }
 
+    /*  CardDataSorterEventHandler OVERRIDES  */
+    @Override
+    public void saveOrder(ArrayList<Integer> order) {
+        mSettings.setCardOrder(order);
+    }
+
+    /*  LoginEvents OVERRIDES  */
     @Override
     public void saveToken(String token) {
         mSettings.setToken(token);
     }
-
-
 }

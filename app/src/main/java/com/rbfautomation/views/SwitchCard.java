@@ -20,7 +20,6 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
     private static final int OFF = 0;
 
 
-	private Context mContext;
 	private View mBody;
     private Button mOnButton, mOffButton;
 
@@ -43,7 +42,6 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
 	@Override
 	public void setupView(Context context) {
 		super.setupView(context);
-		mContext = context;
 
         mCardItem = (SwitchCardData) getCardItem();
 		

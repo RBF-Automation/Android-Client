@@ -19,6 +19,8 @@ public class SecureHttpClient extends DefaultHttpClient {
     private final Context mContext;
 
     private static SecureHttpClient mHttpClient = null;
+    private static final String BKS = "BKS";
+    private static final String HTTPS = "https";
 
 
     public static SecureHttpClient getSecureHttpClient(Context context) {
@@ -36,14 +38,13 @@ public class SecureHttpClient extends DefaultHttpClient {
     @Override
     protected ClientConnectionManager createClientConnectionManager() {
         SchemeRegistry registry = new SchemeRegistry();
-        //registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        registry.register(new Scheme("https", newSslSocketFactory(), Credentials.PORT));
+        registry.register(new Scheme(HTTPS, newSslSocketFactory(), Credentials.PORT));
         return new SingleClientConnManager(getParams(), registry);
     }
 
     private SSLSocketFactory newSslSocketFactory() {
         try {
-            KeyStore trusted = KeyStore.getInstance("BKS");
+            KeyStore trusted = KeyStore.getInstance(BKS);
             InputStream in = mContext.getResources().openRawResource(R.raw.keystore);
             try {
                 trusted.load(in, Credentials.KEYSTORE_PASSWORD.toCharArray());

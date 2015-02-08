@@ -34,6 +34,11 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
 
     public static final String CARD_DATA_INSTANCE_TAG = "CardData";
 
+    public interface CardListViewFragmentEvents {
+        public ArrayList<Integer> getCardOrder();
+        public CardDataSorter.CardDataSorterEventHandler getCardOrderSaver();
+    }
+
     private ArrayList<CardData> mCardData;
     private IGlobalEvents mGlobalEventHandler;
     private NetworkManager mNetworkManager;
@@ -41,6 +46,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
     private Button mLogoutButton;
     private CardDataSorter mSorter;
     private CardListAdapter mCardListAdapter;
+    private CardListViewFragmentEvents mCardListViewFragmnetEventHandler;
 
     public void setCardData(ArrayList<CardData> cardData) {
         mCardData = cardData;
@@ -49,7 +55,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSorter = new CardDataSorter(mGlobalEventHandler.getCardOrder(), mGlobalEventHandler.getCardOrderSaver());
+        mSorter = new CardDataSorter(mCardListViewFragmnetEventHandler.getCardOrder(), mCardListViewFragmnetEventHandler.getCardOrderSaver());
 
         if (savedInstanceState != null) {
             mCardData = savedInstanceState.getParcelableArrayList(CARD_DATA_INSTANCE_TAG);
@@ -105,6 +111,10 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
         mGlobalEventHandler = eventHandler;
     }
 
+    public void setCardListViewEventHandler(CardListViewFragmentEvents eventHnadler) {
+        mCardListViewFragmnetEventHandler = eventHnadler;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -153,16 +163,18 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
     @Override
     public void moveUp(CardData card) {
         int index = mCardData.indexOf(card);
-        if (index != -1 && (index - 1) >= 0) {
-            updateCardOrdering(index - 1, card);
+        int target = index - 1;
+        if (index != -1 && (target) >= 0) {
+            updateCardOrdering(target, card);
         }
     }
 
     @Override
     public void moveDown(CardData card) {
         int index = mCardData.indexOf(card);
-        if (index != -1 && (index + 1) <= mCardData.size()) {
-            updateCardOrdering(index + 1, card);
+        int target = index + 1;
+        if (index != -1 && (target) <= mCardData.size()) {
+            updateCardOrdering(target, card);
         }
     }
 
