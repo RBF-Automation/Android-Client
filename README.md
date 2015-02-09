@@ -9,7 +9,7 @@
 Setup is pretty easy
 
 ###1. Import project into android studio
-This should be pretty strait forward.
+This should be pretty straightforward.
 
 
 ###2. Set up SSL
