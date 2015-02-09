@@ -23,14 +23,14 @@ This assumes you have your SSL.crt from the web server. This guid will not cover
 ####generate the keystore
 
 
-keytool -importcert -v -trustcacerts -file "path_to_cert/interm_ca.cer" -alias IntermediateCA -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "path_to_bouncycastle/bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
+    keytool -importcert -v -trustcacerts -file "path_to_cert/interm_ca.cer" -alias IntermediateCA -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "path_to_bouncycastle/bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
 
 Where `YOUR_PASSWORD` is your keystore password (you will need this for the next part and step 3)
 
 
 ####Verify the key is in the keystore
 
-keytool -list -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
+    keytool -list -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
 
 Where `YOUR_PASSWORD` is your keystore password.
 
