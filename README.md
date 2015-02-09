@@ -1,36 +1,46 @@
 
-
-HOW TO SSL (ssl setup guide)
-----------
-
-
-This guide is based off of this guide: http://blog.antoine.li/2010/10/22/android-trusting-ssl-certificates/
+#RBF Android Client
+![Example](photos/screencap1.png)
 
 
-###Creating the keystore
-
-This assumes you have your SSL.crt from the web server
-
-Download BouncyCastle Provider: http://bouncycastle.org/download/bcprov-jdk16-145.jar
-
-generate the keystore
+#Setup
 
 
-    keytool -importcert -v -trustcacerts -file "path_to_cert/interm_ca.cer" -alias IntermediateCA -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "path_to_bouncycastle/bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
+Setup is pretty easy
 
-Verify the key is in the keystore
+###1. Import project into android studio
+This should be pretty strait forward.
 
-    keytool -list -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
 
+###2. Set up SSL
+NOTE:
+This guide is based off of [this](http://blog.antoine.li/2010/10/22/android-trusting-ssl-certificates/) guide.
+
+This assumes you have your SSL.crt from the web server. This guid will not cover how to create an SSL cert.
+
+[Download BouncyCastle Provider](http://bouncycastle.org/download/bcprov-jdk16-145.jar)
+
+####generate the keystore
+
+
+keytool -importcert -v -trustcacerts -file "path_to_cert/interm_ca.cer" -alias IntermediateCA -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "path_to_bouncycastle/bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
+
+Where `YOUR_PASSWORD` is your keystore password (you will need this for the next part and step 3)
+
+
+####Verify the key is in the keystore
+
+keytool -list -keystore "keystore.bks" -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath "bcprov-jdk16-145.jar" -storetype BKS -storepass YOUR_PASSWORD
+
+Where `YOUR_PASSWORD` is your keystore password.
+
+####Move Keystore into the project
 Put the keystore in /res/raw/keystore.bsk
 
 
-NOTES:
+###3. Setup Credentials.java
+Go to `RBFAutomation/app/src/main/java/com/rbfautomation/network/Credentials.java.example` and copy it to `RBFAutomation/app/src/main/java/com/rbfautomation/network/Credentials.java`
 
-    {
-        "id": 123,
-        "type": 0,
-        "name": "name",
-        "off": "off",
-        "on": "on"
-    }
+Then fill out the file with the required information.
+
+###4. Ensure the web service is working and go!
