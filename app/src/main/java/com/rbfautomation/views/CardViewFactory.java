@@ -5,6 +5,7 @@ import android.content.Context;
 import com.rbfautomation.data.ActivityLogPreviewCardData;
 import com.rbfautomation.data.CardData;
 import com.rbfautomation.data.SwitchCardData;
+import com.rbfautomation.data.UserTrackerCardData;
 
 public class CardViewFactory {
 
@@ -17,6 +18,9 @@ public class CardViewFactory {
 
             case ActivityLogPreviewCardData.TYPE:
                 return new ActivityLogPreviewCard(context, (ActivityLogPreviewCardData) cardData, cardEventHandler);
+
+            case UserTrackerCardData.TYPE:
+                return new UserTrackerCard(context, (UserTrackerCardData) cardData, cardEventHandler);
 
 			default:
 				break;

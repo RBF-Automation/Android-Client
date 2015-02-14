@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingBottom="10dp"
+      android:minHeight="100dp">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:id="@+id/user_data_loading"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:visibility="gone"
+        android:textAllCaps="false"
+        android:textColor="@color/buttonTextColor"
+        android:background="@drawable/button"
+        android:text="@string/retry_connection"
+        android:id="@+id/user_tracker_retry"
+        android:layout_gravity="center_horizontal"/>
+
+
+    <LinearLayout
+                  android:orientation="vertical"
+                  android:id="@+id/user_data_content"
+                  android:background="@color/light_grey"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+    </LinearLayout>
+</LinearLayout>

@@ -9,6 +9,7 @@ import com.rbfautomation.network.requests.GetActivityLogRequest;
 import com.rbfautomation.network.requests.GetManifestRequest;
 import com.rbfautomation.network.requests.GetTokenRequest;
 import com.rbfautomation.network.requests.GetUserInformationRequest;
+import com.rbfautomation.network.requests.GetUserTrackerDataRequest;
 import com.rbfautomation.network.requests.Request;
 import com.rbfautomation.network.requests.SetSwitchRequest;
 import com.rbfautomation.network.requests.StartSessionRequest;
@@ -39,6 +40,9 @@ public class ResponseFactory {
 
             case GetActivityLogRequest.TYPE:
                 return new GetActivtyListResponse(request, responseText);
+
+            case GetUserTrackerDataRequest.TYPE:
+                return new GetUserTrackerResponse(request, responseText);
         }
 
         return null;

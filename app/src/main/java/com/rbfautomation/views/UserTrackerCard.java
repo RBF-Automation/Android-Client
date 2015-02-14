@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.rbfautomation.R;
-import com.rbfautomation.data.ActivityLogEvent;
-import com.rbfautomation.data.ActivityLogPreviewCardData;
+import com.rbfautomation.data.UserTrackerCardData;
+import com.rbfautomation.data.UserTrackerItem;
 import com.rbfautomation.network.NetworkManager;
-import com.rbfautomation.network.requests.GetActivityLogRequest;
-import com.rbfautomation.network.responses.GetActivtyListResponse;
+import com.rbfautomation.network.requests.GetUserTrackerDataRequest;
+import com.rbfautomation.network.responses.GetUserTrackerResponse;
 import com.rbfautomation.network.responses.Response;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by brian on 2/4/15.
  */
-public class ActivityLogPreviewCard extends CardView implements NetworkManager.NetworkEventListener {
+public class UserTrackerCard extends CardView implements NetworkManager.NetworkEventListener {
 
     private static final int NUM_RESULTS = 5;
 
@@ -31,19 +31,19 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
     private LinearLayout mPreviewDataContainer;
     private Button mRetryButton;
 
-    private ActivityLogPreviewCardData mCardItem;
+    private UserTrackerCardData mCardItem;
 
     private NetworkManager mNetworkManager;
 
-    public ActivityLogPreviewCard(Context context, ActivityLogPreviewCardData cardItem, CardViewEventHandler eventHandler) {
+    public UserTrackerCard(Context context, UserTrackerCardData cardItem, CardViewEventHandler eventHandler) {
         super(context, cardItem, eventHandler);
     }
 
-    public ActivityLogPreviewCard(Context context, AttributeSet attrs) {
+    public UserTrackerCard(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ActivityLogPreviewCard(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UserTrackerCard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -52,11 +52,11 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
         super.setupView(context);
         mContext = context;
 
-        mCardItem = (ActivityLogPreviewCardData) getCardItem();
-        mBody = inflateBody(R.layout.activity_log_preview_card_body);
-        mProgressBar = (ProgressBar) mBody.findViewById(R.id.log_loading);
-        mPreviewDataContainer = (LinearLayout) mBody.findViewById(R.id.log_content);
-        mRetryButton = (Button) mBody.findViewById(R.id.retry_button_activity_preview);
+        mCardItem = (UserTrackerCardData) getCardItem();
+        mBody = inflateBody(R.layout.user_tracker_card_body);
+        mProgressBar = (ProgressBar) mBody.findViewById(R.id.user_data_loading);
+        mPreviewDataContainer = (LinearLayout) mBody.findViewById(R.id.user_data_content);
+        mRetryButton = (Button) mBody.findViewById(R.id.user_tracker_retry);
         mRetryButton.setOnClickListener(this);
 
         setHeader(mCardItem.getName());
@@ -72,7 +72,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
         mPreviewDataContainer.removeAllViews();
         mPreviewDataContainer.setVisibility(GONE);
         mProgressBar.setVisibility(VISIBLE);
-        mNetworkManager.request(new GetActivityLogRequest(NUM_RESULTS));
+        mNetworkManager.request(new GetUserTrackerDataRequest(mCardItem.getRemoteId()));
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
         super.onClick(v);
 
         switch (v.getId()) {
-            case R.id.retry_button_activity_preview:
+            case R.id.user_tracker_retry:
                 refresh();
                 break;
 
@@ -112,19 +112,19 @@ public class ActivityLogPreviewCard extends CardView implements NetworkManager.N
             handleResponseError(response);
         } else {
             switch (response.getType()) {
-                case GetActivityLogRequest.TYPE:
-                    showLogData(((GetActivtyListResponse)response).getActivityEventList());
+                case GetUserTrackerDataRequest.TYPE:
+                    showUserTrakerData(((GetUserTrackerResponse)response).getUserTrackerData());
                     break;
             }
         }
     }
 
-    private void showLogData(ArrayList<ActivityLogEvent> events) {
+    private void showUserTrakerData(ArrayList<UserTrackerItem> items) {
         mPreviewDataContainer.setVisibility(VISIBLE);
         mProgressBar.setVisibility(GONE);
 
-        for (ActivityLogEvent event : events) {
-            mPreviewDataContainer.addView(new ActivityLogPreviewItemView(mContext, event));
+        for (UserTrackerItem item : items) {
+            mPreviewDataContainer.addView(new UserTrackerItemView(mContext, item));
         }
     }
 

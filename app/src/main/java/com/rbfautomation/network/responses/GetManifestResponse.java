@@ -3,6 +3,7 @@ package com.rbfautomation.network.responses;
 import com.rbfautomation.data.ActivityLogPreviewCardData;
 import com.rbfautomation.data.CardData;
 import com.rbfautomation.data.SwitchCardData;
+import com.rbfautomation.data.UserTrackerCardData;
 import com.rbfautomation.network.requests.Request;
 
 import org.json.JSONArray;
@@ -46,6 +47,13 @@ public class GetManifestResponse extends Response {
 
                     case ActivityLogPreviewCardData.TYPE:
                         mCards.add(new ActivityLogPreviewCardData(
+                                (int) obj.get("id"),
+                                (String) obj.get("name")
+                        ));
+                        break;
+
+                    case UserTrackerCardData.TYPE:
+                        mCards.add(new UserTrackerCardData(
                                 (int) obj.get("id"),
                                 (String) obj.get("name")
                         ));
