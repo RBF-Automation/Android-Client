@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import com.rbfautomation.data.CardData;
 import com.rbfautomation.data.CardDataSorter;
 import com.rbfautomation.fragments.CardListViewFragment;
-import com.rbfautomation.fragments.IRbfFragment;
 import com.rbfautomation.fragments.LoginFragment;
 import com.rbfautomation.fragments.SplashFragment;
 import com.rbfautomation.network.ISessionContext;
@@ -32,7 +31,6 @@ public class Main extends ActionBarActivity implements
     private FragmentManager mFragmentManager;
     private Fragment mContent;
     private Settings mSettings;
-    private RbfSessionContext mSessionContext;
 
     /*  ACTIVITY OVERRIDES  */
 
@@ -46,18 +44,7 @@ public class Main extends ActionBarActivity implements
         if (savedInstanceState != null) {
             mContent = mFragmentManager.getFragment(savedInstanceState, FRAGMENT_ID);
             mFragmentManager.executePendingTransactions();
-
-            if (mContent instanceof IRbfFragment) {
-                ((IRbfFragment)mContent).setGlobalEventHandler(this);
-            }
-
-            if (mContent instanceof CardListViewFragment.CardListViewFragmentEvents) {
-                ((CardListViewFragment)mContent).setCardListViewEventHandler(this);
-            }
-
         } else {
-
-
             if (mSettings.getToken() == null) {
                 goToLogin();
             } else {
@@ -81,8 +68,6 @@ public class Main extends ActionBarActivity implements
 
     public void goToLogin() {
         LoginFragment loginFragment = new LoginFragment();
-        loginFragment.setGlobalEventHandler(this);
-        loginFragment.setLoginEventHandler(this);
         mContent = loginFragment;
         mFragmentManager.beginTransaction().replace(getFragmnetContainer(), loginFragment).commit();
     }
@@ -108,8 +93,6 @@ public class Main extends ActionBarActivity implements
     @Override
     public void goToCardListView(ArrayList<CardData> cards) {
         CardListViewFragment fragment = new CardListViewFragment();
-        fragment.setGlobalEventHandler(this);
-        fragment.setCardListViewEventHandler(this);
         fragment.setCardData(cards);
         mContent = fragment;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -121,7 +104,6 @@ public class Main extends ActionBarActivity implements
     @Override
     public void goToSplash() {
         SplashFragment fragment = new SplashFragment();
-        fragment.setGlobalEventHandler(this);
         mContent = fragment;
         mFragmentManager.beginTransaction().replace(getFragmnetContainer(), fragment).commit();
     }

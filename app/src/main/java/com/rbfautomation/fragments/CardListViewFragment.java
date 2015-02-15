@@ -1,6 +1,7 @@
 package com.rbfautomation.fragments;
 
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -30,7 +31,7 @@ import com.rbfautomation.views.CardView;
 import java.util.ArrayList;
 
 
-public class CardListViewFragment extends ListFragment implements IRbfFragment, View.OnClickListener, NetworkManager.NetworkEventListener, CardView.CardViewEventHandler {
+public class CardListViewFragment extends ListFragment implements View.OnClickListener, NetworkManager.NetworkEventListener, CardView.CardViewEventHandler {
 
     public static final String CARD_DATA_INSTANCE_TAG = "CardData";
 
@@ -53,6 +54,17 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mCardListViewFragmnetEventHandler = (CardListViewFragmentEvents) activity;
+            mGlobalEventHandler = (IGlobalEvents) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()  + " must implement CardListViewFragmentEvents and IGlobalEvents");
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mSorter = new CardDataSorter(mCardListViewFragmnetEventHandler.getCardOrder(), mCardListViewFragmnetEventHandler.getCardOrderSaver());
@@ -65,6 +77,7 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
 
         mCardListAdapter = new CardListAdapter(getActivity(), mCardData, this);
         setListAdapter(mCardListAdapter);
+
     }
 
     @Override
@@ -104,15 +117,6 @@ public class CardListViewFragment extends ListFragment implements IRbfFragment, 
         mNetworkManager.request(new GetUserInformationRequest());
 
         return v;
-    }
-
-    @Override
-    public void setGlobalEventHandler(IGlobalEvents eventHandler) {
-        mGlobalEventHandler = eventHandler;
-    }
-
-    public void setCardListViewEventHandler(CardListViewFragmentEvents eventHnadler) {
-        mCardListViewFragmnetEventHandler = eventHnadler;
     }
 
     @Override

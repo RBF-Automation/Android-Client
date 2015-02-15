@@ -21,7 +21,7 @@ import com.rbfautomation.network.responses.Response;
 /**
  * Created by brian on 2/1/15.
  */
-public class LoginFragment  extends Fragment implements IRbfFragment, NetworkManager.NetworkEventListener, View.OnClickListener {
+public class LoginFragment  extends Fragment implements NetworkManager.NetworkEventListener, View.OnClickListener {
 
     public interface LoginEvents {
         public void saveToken(String token);
@@ -33,6 +33,17 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
     private LoginEvents mLoginEvents;
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mLoginEvents = (LoginEvents) activity;
+            mGlobalEventHandler = (IGlobalEvents) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()  + " must implement LoginEvents and IGlobalEvents");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.login_fragment, null);
         mUsername = (TextView) v.findViewById(R.id.username);
@@ -42,14 +53,6 @@ public class LoginFragment  extends Fragment implements IRbfFragment, NetworkMan
         mLogin.setOnClickListener(this);
 
         return v;
-    }
-
-    public void setGlobalEventHandler(IGlobalEvents eventHandler) {
-        mGlobalEventHandler = eventHandler;
-    }
-
-    public void setLoginEventHandler(LoginEvents eventHandler) {
-        mLoginEvents = eventHandler;
     }
 
     private void login() {

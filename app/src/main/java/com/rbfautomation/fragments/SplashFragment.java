@@ -1,6 +1,7 @@
 package com.rbfautomation.fragments;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import com.rbfautomation.network.responses.Response;
 import com.rbfautomation.network.responses.StartSessionResponse;
 
 
-public class SplashFragment extends Fragment implements IRbfFragment, NetworkManager.NetworkEventListener, View.OnClickListener {
+public class SplashFragment extends Fragment implements NetworkManager.NetworkEventListener, View.OnClickListener {
 
     NetworkManager mNetworkManager;
     private IGlobalEvents mGlobalEventHandler;
@@ -45,8 +46,13 @@ public class SplashFragment extends Fragment implements IRbfFragment, NetworkMan
     }
 
     @Override
-    public void setGlobalEventHandler(IGlobalEvents eventHandler) {
-        mGlobalEventHandler = eventHandler;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mGlobalEventHandler = (IGlobalEvents) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()  + " must implement IGlobalEvents");
+        }
     }
 
     @Override
