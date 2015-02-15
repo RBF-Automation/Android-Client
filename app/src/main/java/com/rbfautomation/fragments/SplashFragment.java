@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.rbfautomation.IGlobalEvents;
+import com.rbfautomation.IRbfFragmentEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetManifestRequest;
@@ -26,7 +26,7 @@ import com.rbfautomation.network.responses.StartSessionResponse;
 public class SplashFragment extends Fragment implements NetworkManager.NetworkEventListener, View.OnClickListener {
 
     NetworkManager mNetworkManager;
-    private IGlobalEvents mGlobalEventHandler;
+    private IRbfFragmentEvents mGlobalEventHandler;
     private Button mRetryButton;
     private Request mLastRequest;
 
@@ -49,7 +49,7 @@ public class SplashFragment extends Fragment implements NetworkManager.NetworkEv
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mGlobalEventHandler = (IGlobalEvents) activity;
+            mGlobalEventHandler = (IRbfFragmentEvents) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()  + " must implement IGlobalEvents");
         }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 
 public class Main extends ActionBarActivity implements
-                                            IGlobalEvents,
+        IRbfFragmentEvents,
                                             CardDataSorter.CardDataSorterEventHandler,
                                             LoginFragment.LoginEvents,
                                             CardListViewFragment.CardListViewFragmentEvents {

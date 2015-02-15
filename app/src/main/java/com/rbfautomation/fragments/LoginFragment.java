@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rbfautomation.IGlobalEvents;
+import com.rbfautomation.IRbfFragmentEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.network.NetworkManager;
 import com.rbfautomation.network.requests.GetTokenRequest;
@@ -29,7 +29,7 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
 
     private TextView mUsername, mPassword;
     private Button mLogin;
-    private IGlobalEvents mGlobalEventHandler;
+    private IRbfFragmentEvents mGlobalEventHandler;
     private LoginEvents mLoginEvents;
 
     @Override
@@ -37,7 +37,7 @@ public class LoginFragment  extends Fragment implements NetworkManager.NetworkEv
         super.onAttach(activity);
         try {
             mLoginEvents = (LoginEvents) activity;
-            mGlobalEventHandler = (IGlobalEvents) activity;
+            mGlobalEventHandler = (IRbfFragmentEvents) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()  + " must implement LoginEvents and IGlobalEvents");
         }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by brian on 2/1/15.
  */
-public interface IGlobalEvents {
+public interface IRbfFragmentEvents {
     public void logout();
     public void goToCardListView(ArrayList<CardData> cards);
     public void goToSplash();

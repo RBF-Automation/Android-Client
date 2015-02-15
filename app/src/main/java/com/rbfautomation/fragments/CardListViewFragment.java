@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rbfautomation.IGlobalEvents;
+import com.rbfautomation.IRbfFragmentEvents;
 import com.rbfautomation.R;
 import com.rbfautomation.data.CardData;
 import com.rbfautomation.data.CardDataSorter;
@@ -41,7 +41,7 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
     }
 
     private ArrayList<CardData> mCardData;
-    private IGlobalEvents mGlobalEventHandler;
+    private IRbfFragmentEvents mGlobalEventHandler;
     private NetworkManager mNetworkManager;
     private TextView mUsernameText;
     private Button mLogoutButton;
@@ -58,7 +58,7 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
         super.onAttach(activity);
         try {
             mCardListViewFragmnetEventHandler = (CardListViewFragmentEvents) activity;
-            mGlobalEventHandler = (IGlobalEvents) activity;
+            mGlobalEventHandler = (IRbfFragmentEvents) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()  + " must implement CardListViewFragmentEvents and IGlobalEvents");
         }
