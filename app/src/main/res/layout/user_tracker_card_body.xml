@@ -4,12 +4,13 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingBottom="10dp"
-      android:minHeight="100dp">
+      android:minHeight="40dp">
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="60dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:id="@+id/user_data_loading"
         android:layout_gravity="center_horizontal"/>
 
