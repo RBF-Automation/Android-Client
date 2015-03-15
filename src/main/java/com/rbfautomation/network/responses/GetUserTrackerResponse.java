@@ -1,7 +1,5 @@
 package com.rbfautomation.network.responses;
 
-import android.util.Log;
-
 import com.rbfautomation.data.UserTrackerItem;
 import com.rbfautomation.network.requests.Request;
 
@@ -24,7 +22,6 @@ public class GetUserTrackerResponse extends Response {
 
     @Override
     protected void decodeResponseText(String responseText) {
-        Log.e("string", responseText);
         try {
 
             JSONObject obj = new JSONObject(responseText);
