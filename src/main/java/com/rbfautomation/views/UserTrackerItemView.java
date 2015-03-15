@@ -21,9 +21,9 @@ public class UserTrackerItemView extends LinearLayout{
     private LayoutInflater mInflater;
     private Context mContext;
 
-    public UserTrackerItemView(Context context, UserTrackerItem logEvent) {
+    public UserTrackerItemView(Context context, UserTrackerItem userTrackerItem) {
         super(context);
-        mUserTrackerItem = logEvent;
+        mUserTrackerItem = userTrackerItem;
         setupView(context);
     }
 
@@ -42,6 +42,19 @@ public class UserTrackerItemView extends LinearLayout{
         mContext = context;
         mRootView = (LinearLayout) mInflater.inflate(R.layout.user_tracker_item_view, this);
         ((TextView) mRootView.findViewById(R.id.user_tracker_user)).setText(mUserTrackerItem.getUser());
+
+
+        TextView isHome = ((TextView) mRootView.findViewById(R.id.is_home));
+        if (mUserTrackerItem.getIsHome()) {
+            isHome.setText(getResources().getString(R.string.home));
+            isHome.setBackground(getResources().getDrawable(R.color.user_home));
+        } else {
+            isHome.setText(getResources().getString(R.string.not_home));
+            isHome.setBackground(getResources().getDrawable(R.color.user_not_home));
+        }
+
+
+        ((TextView) mRootView.findViewById(R.id.status)).setText(mUserTrackerItem.getStatus());
     }
 
 }

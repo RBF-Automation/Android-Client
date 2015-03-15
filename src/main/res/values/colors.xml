@@ -14,6 +14,9 @@
     <color name="black">#000000</color>
 
     <color name="light_grey">#F4F4F4</color>
+    <color name="user_home_grey">#ffe8e8e8</color>
+    <color name="user_home">#3b00ff12</color>
+    <color name="user_not_home">#38e90009</color>
 
     <color name="mid_grey">#AAAAAA</color>
 

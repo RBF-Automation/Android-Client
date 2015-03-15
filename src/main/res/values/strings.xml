@@ -17,6 +17,7 @@
     <string name="show_message">- Show Original Message -</string>
     <string name="hide_message">- Hide Original Message -</string>
 
-
+    <string name="home">Home</string>
+    <string name="not_home">Not Home</string>
 
 </resources>
