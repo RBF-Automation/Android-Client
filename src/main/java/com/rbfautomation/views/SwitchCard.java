@@ -20,32 +20,32 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
     private static final int OFF = 0;
 
 
-	private View mBody;
+    private View mBody;
     private Button mOnButton, mOffButton;
 
     private SwitchCardData mCardItem;
 
     private NetworkManager mNetworkManager;
 
-	public SwitchCard(Context context, SwitchCardData cardItem, CardViewEventHandler eventHandler) {
-		super(context, cardItem, eventHandler);
-	}
-	
-	public SwitchCard(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-	
-	public SwitchCard(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
-	
-	@Override
-	public void setupView(Context context) {
-		super.setupView(context);
+    public SwitchCard(Context context, SwitchCardData cardItem, CardViewEventHandler eventHandler) {
+        super(context, cardItem, eventHandler);
+    }
+    
+    public SwitchCard(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+    
+    public SwitchCard(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+    
+    @Override
+    public void setupView(Context context) {
+        super.setupView(context);
 
         mCardItem = (SwitchCardData) getCardItem();
-		
-		mBody = inflateBody(R.layout.switch_card_body);
+        
+        mBody = inflateBody(R.layout.switch_card_body);
 
         mOnButton = (Button) mBody.findViewById(R.id.on_button);
         mOffButton = (Button) mBody.findViewById(R.id.off_button);
@@ -60,30 +60,30 @@ public class SwitchCard extends CardView implements NetworkManager.NetworkEventL
         mNetworkManager = new NetworkManager(this, context, getEventHandler().getSessionContext());
 
         useMenu(true);
-	}
+    }
 
-	@Override
-	public int getContextMenuResource() {
-		return NO_RESOURCE;
-	}
+    @Override
+    public int getContextMenuResource() {
+        return NO_RESOURCE;
+    }
 
-	@Override
-	public void onClick(View v) {
-		super.onClick(v);
-		
-		switch (v.getId()) {
-			case R.id.on_button:
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        
+        switch (v.getId()) {
+            case R.id.on_button:
                 mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), ON));
                 break;
 
             case R.id.off_button:
                 mNetworkManager.request(new SetSwitchRequest(mCardItem.getRemoteId(), OFF));
                 break;
-	
-			default:
-				break;
-		}
-	}
+    
+            default:
+                break;
+        }
+    }
 
     @Override
     public void onCompleteRequest(Response response) {

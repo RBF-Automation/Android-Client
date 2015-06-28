@@ -12,16 +12,16 @@ import java.util.ArrayList;
 
 public class CardListAdapter extends BaseAdapter {
 
-	private final Context mContext;
+    private final Context mContext;
     private final CardView.CardViewEventHandler mCardEventHandler;
     private ArrayList<CardData> mCardData;
     //private static HashMap<Long, CardView> mCache = new HashMap<Long, CardView>();
-	
-	public CardListAdapter(Context context, ArrayList<CardData> cardItems, CardView.CardViewEventHandler cardEventHandler) {
-		mContext = context;
+    
+    public CardListAdapter(Context context, ArrayList<CardData> cardItems, CardView.CardViewEventHandler cardEventHandler) {
+        mContext = context;
         mCardEventHandler = cardEventHandler;
         mCardData = cardItems;
-	}
+    }
 
     @Override
     public long getItemId(int id) {
@@ -44,37 +44,37 @@ public class CardListAdapter extends BaseAdapter {
     }
 
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		//CardItem cardItem = getItem(position);
-		
-		//CardView card = (CardView) mCache.get(cardItem.getId());
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        
+        //CardItem cardItem = getItem(position);
+        
+        //CardView card = (CardView) mCache.get(cardItem.getId());
 
-		//if (card != null) {
-		//	return card;
-		//}
-		
-		CardView view = CardViewFactory.getView(getItem(position), mContext, mCardEventHandler);
-		//mCache.put(cardItem.getId(), view);
-		
-		return view;
-		
-	}
-	
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-		//mCache.clear();
-	}
-	
-	public boolean areAllItemsEnabled() {
+        //if (card != null) {
+        //    return card;
+        //}
+        
+        CardView view = CardViewFactory.getView(getItem(position), mContext, mCardEventHandler);
+        //mCache.put(cardItem.getId(), view);
+        
+        return view;
+        
+    }
+    
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        //mCache.clear();
+    }
+    
+    public boolean areAllItemsEnabled() {
         return false;
     }
 
     public boolean isEnabled(int position) {
         return false;
     }
-	
+    
 
 }
