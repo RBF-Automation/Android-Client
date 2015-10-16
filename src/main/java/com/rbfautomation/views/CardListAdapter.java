@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import com.rbfautomation.data.CardData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class CardListAdapter extends BaseAdapter {
@@ -15,8 +16,8 @@ public class CardListAdapter extends BaseAdapter {
     private final Context mContext;
     private final CardView.CardViewEventHandler mCardEventHandler;
     private ArrayList<CardData> mCardData;
-    //private static HashMap<Long, CardView> mCache = new HashMap<Long, CardView>();
-    
+    private static HashMap<Integer, CardView> mCache = new HashMap<>();
+
     public CardListAdapter(Context context, ArrayList<CardData> cardItems, CardView.CardViewEventHandler cardEventHandler) {
         mContext = context;
         mCardEventHandler = cardEventHandler;
@@ -47,17 +48,15 @@ public class CardListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         
-        //CardItem cardItem = getItem(position);
-        
-        //CardView card = (CardView) mCache.get(cardItem.getId());
+        CardView card = mCache.get(getItem(position).getRemoteId());
 
-        //if (card != null) {
-        //    return card;
-        //}
-        
+        if (card != null) {
+            return card;
+        }
+
         CardView view = CardViewFactory.getView(getItem(position), mContext, mCardEventHandler);
-        //mCache.put(cardItem.getId(), view);
-        
+        mCache.put(getItem(position).getRemoteId(), view);
+
         return view;
         
     }
@@ -65,7 +64,7 @@ public class CardListAdapter extends BaseAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        //mCache.clear();
+        mCache.clear();
     }
     
     public boolean areAllItemsEnabled() {

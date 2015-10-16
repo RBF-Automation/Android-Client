@@ -29,6 +29,7 @@
                   android:layout_alignParentTop="true"
                   android:background="@color/card_list_background"
                   android:scrollingCache="false"
+                  android:animationCache="false"
                   android:divider="@null"
             >
         </ListView>
