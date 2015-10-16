@@ -20,7 +20,7 @@ public class Settings {
     }
 
     public void setToken(String token) {
-        mPrefs.edit().putString("token", token).commit();
+        mPrefs.edit().putString("token", token).apply();
     }
 
     public String getToken() {
@@ -29,12 +29,14 @@ public class Settings {
     }
 
     public void setCardOrder(ArrayList<Integer> cardOrder) {
-        mPrefs.edit().putString("cardOrder", (new JSONArray(cardOrder)).toString()).commit();
+        mPrefs.edit().putString("cardOrder", (new JSONArray(cardOrder)).toString()).apply();
+        getCardOrder();
     }
 
     public ArrayList<Integer> getCardOrder() {
 
         ArrayList<Integer> cardOrder = new ArrayList<>();
+
         try {
             JSONArray json = new JSONArray(mPrefs.getString("cardOrder", "[]"));
             for (int i = 0; i < json.length(); i++) {

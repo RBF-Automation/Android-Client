@@ -19,7 +19,7 @@ public abstract class CardData implements Parcelable {
     }
 
     public abstract int getType();
-    
+
     public int getRemoteId() {
         return mRemoteId;
     }

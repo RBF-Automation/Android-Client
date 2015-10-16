@@ -77,7 +77,6 @@ public class CardListViewFragment extends ListFragment implements View.OnClickLi
 
         mCardListAdapter = new CardListAdapter(getActivity(), mCardData, this);
         setListAdapter(mCardListAdapter);
-
     }
 
     @Override

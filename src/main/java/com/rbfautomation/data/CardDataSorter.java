@@ -1,6 +1,7 @@
 package com.rbfautomation.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Collections;
 public class CardDataSorter {
 
     public interface CardDataSorterEventHandler {
-        public void saveOrder(ArrayList<Integer> cards);
+        void saveOrder(ArrayList<Integer> cards);
     }
 
     private ArrayList<Integer> mOrder;
@@ -24,33 +25,41 @@ public class CardDataSorter {
         mEventHandler.saveOrder(mOrder);
     }
 
+    /**
+     * Maps an array of cards to the order pulled form the settings.
+     * Returns the same input, just in a different order.
+     * @param cards
+     * @return
+     */
     public ArrayList<CardData> map(ArrayList<CardData> cards) {
 
-        ArrayList<CardData> mapped = new ArrayList<>();
-        while (mapped.size() < cards.size()) mapped.add(null);
+        CardData[] mapped = new CardData[mOrder.size()];
 
         ArrayList<CardData> unMapped = new ArrayList<>();
-
         for (CardData card : cards) {
-            if (mOrder.contains(card.getType())) {
-                mapped.add(mOrder.indexOf(card.getType()), card);
+            if (mOrder.contains(card.getRemoteId())) {
+                mapped[mOrder.indexOf(card.getRemoteId())] = card;
             } else {
                 unMapped.add(card);
             }
         }
 
-        mapped.removeAll(Collections.singleton(null));
-        mapped.addAll(unMapped);
+        ArrayList<CardData> realMapped = new ArrayList<>(Arrays.asList(mapped));
+        realMapped.addAll(unMapped);
+        realMapped.removeAll(Collections.singleton(null));
+        setOrder(realMapped);
 
-        setOrder(mapped);
-
-        return mapped;
+        return realMapped;
     }
 
+    /**
+     * Saves the card order.
+     * @param cards
+     */
     public void setOrder(ArrayList<CardData> cards) {
         mOrder = new ArrayList<>(cards.size());
         for (CardData card : cards) {
-            mOrder.add(card.getType());
+            mOrder.add(card.getRemoteId());
         }
         saveOrder();
     }
